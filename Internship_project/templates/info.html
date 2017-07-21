@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+
+{% block navbar %}
+    <li><a href="../">Pull requests</a></li>
+{% endblock %}
+
+{% block content %}
+    <div id="chart_div80" class="charts"></div>
+    <div id="information"></div>
+    {{ branche }}
+{% endblock %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+{% block scripts %}
+    <script type="text/javascript">
+        var get_id = /id=([^&#=]*)/.exec(window.location.search);
+        var get_date = /date=([^&#=]*)/.exec(window.location.search);
+        var week = "";
+        try {
+            week = /week=([^&#=]*)/.exec(window.location.search)[1];
+        } catch (e) {
+        }
+        var id = get_id[1];
+        var date = new Date(window.decodeURIComponent(get_date[1]));
+
+        var data_fromDatabase = [];
+        var githubUser = '{{ githubUser }}';
+        var githubRepo = '{{ githubRepo }}';
+
+        {% for PR in by_closedPR %}
+           data_fromDatabase.push([
+                new Date(parse_time("{{ PR.created_at }}")),
+                new Date(parse_time("{{ PR.merged_at }}")),
+                "{{ PR.number}}",
+                (new Date(parse_time("{{ PR.merged_at}}")) - new Date(parse_time("{{ PR.created_at }}"))) / (1000 * 60 * 60),
+                "{{ PR.title }}"
+            ]);
+        {% endfor %}
+
+
+
+        if (week === "") {
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(bySpeedWITHDATE);
+        }else{
+            google.charts.load('current', {'packages': ['table']});
+            google.charts.setOnLoadCallback(drawTable);
+        }
+
+        //google.charts.load('current', {'packages': ['table']});
+        //google.charts.setOnLoadCallback(drawTable);
+
+    </script>
+{% endblock %}
