@@ -24,18 +24,6 @@ function get_week(date) {
         return 5
     }
 }
-function parse_time(data) {
-
-    if (data.substr(-8, 1) !== ":") {
-        data = [data.slice(0, -5), ":00", data.slice(-5)].join('');
-    }
-    if (data.includes("p.m.")) {
-        return data.replace("p.m.", "PM");
-    }
-    else {
-        return data.replace("a.m.", "AM");
-    }
-}
 function is_in_list(list, user) {
     for (var i = 0; i < list.length; i++) {
         if (list[i] === user) {
@@ -121,6 +109,7 @@ function get_info_about_dataByMonth(data) {
     }
     _vedlejsi.push(data[data.length-1]);
     _infoData.push(_vedlejsi);
+    console.log(_infoData)
     return _infoData
 }
 function get_info_by_how_long_before_merged(data) {
@@ -134,7 +123,6 @@ function get_info_by_how_long_before_merged(data) {
     var _speed_8 = [];
     var pole = [];
     var _infoData = get_info_about_dataByMonth(data);
-
     for (var i = 0; i < _infoData.length; i++) {
         for (var ch = 0; ch < _infoData[i].length; ch++) {
             if (_infoData[i][ch][DIFFERENCE] < 3) {
@@ -309,7 +297,9 @@ function get_data_by_speed_to_graph(data) {
             }
         }
         pole.push([new Date(date.getYear() + 1900, date.getMonth()), _speeds[i][0].length, _speeds[i][1].length, _speeds[i][2].length, _speeds[i][3].length, _speeds[i][4].length, _speeds[i][5].length, _speeds[i][6].length, _speeds[i][7].length])
-
+    }
+    if(pole.length===1){
+        pole.push([new Date(date.getYear() + 1900, date.getMonth()-1),null,null,null,null,null,null,null,null])
     }
     return pole
 }
