@@ -1,95 +1,95 @@
 {% extends "main.html" %}
 
- {% block navbar %}
-<li class="active"><a href="">Pull requests<span class="sr-only">(current)</span></a></li>
+{% block navbar %}
+    <li class="active"><a href="">Pull requests<span class="sr-only">(current)</span></a></li>
 {% endblock %}
 
 {% block content %}
 
- {% if haveData %}
+    {% if haveData %}
 
-<h3 class="col-md-offset-1">{{ githubRepo }}</h3>
+        <h3 class="col-md-offset-1">{{ githubRepo }}</h3>
+        <form id="dateRangeForm" method="GET" action="{% url 'index' %}" class="form-horizontal">
 
-<div id="chart_div80" class="charts"></div>
-<div id="chart_div" class="charts"></div>
-<div id="chart_div2" class="charts"></div>
-<div id="chart_div10" class="charts"></div>
-<div id="chart_div3" class="charts"></div>
-<div id="chart_div4" class="charts"></div>
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-xs-5 date">
+                    <label class="col-xs-3 control-label">FROM</label>
+                    <div class="input-group input-append date" id="dateRangePicker">
+                        <input type="text" class="form-control" name="btmDate" id="date" placeholder="{{ btmDate }}" title="btmDate"/>
+                    </div>
+                    <div class="date_margin">
+                        <label class="col-xs-3 control-label">TO</label>
+                        <div class="input-group input-append date" id="dateRangePicker">
+                            <input type="text" class="form-control" name="topDate" id="date" placeholder="{{ topDate }}"  title="topDate"/>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-2 col-xs-5 date_margin special">
+                        <select class="form-control" name="branche">
 
-<form id="dateRangeForm" method="GET" action="{% url 'index' %}" class="form-horizontal">
+                            <option value="all">all</option>
+                            {% for br in branches %}
+                                {% if br.baseRefName == branche %}
+                                <option value="{{ br }}" selected>{{ br }}</option>
+                                {% else %}
+                                <option value="{{ br }}">{{ br }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default date_margin">Submit</button>
+                </div>
 
-      {% csrf_token %}
-      <div class="form-group">
-    <div class="col-xs-5 date">
-        <label class="col-xs-3 control-label">FROM</label>
-        <div class="input-group input-append date" id="dateRangePicker">
-          <input type="text" class="form-control" name="btmDate"id="date"title="btmDate" />
-        </div>
-      <div class="date_margin">
-        <label class="col-xs-3 control-label">TO</label>
-        <div class="input-group input-append date" id="dateRangePicker">
-          <input type="text" class="form-control" name="topDate"id="date"title="topDate" />
-        </div>
-      </div>
-        <div class="col-md-offset-2 col-xs-5 date_margin special">
-          <select class="form-control" name="branche">
-            <option value="all">all</option>
-            {%for branch in branches%}
-              <option value="{{branch}}">{{branch}}</option>
-              {%endfor%}
-          </select>
-        </div>
-      <button type="submit" class="btn btn-default date_margin">Submit</button>
-    </div>
+            </div>
 
-  </div>
+        </form>
+        <div id="chart_div80" class="charts"></div>
+        <div id="chart_div" class="charts"></div>
+        <div id="chart_div2" class="charts"></div>
+        <div id="chart_div10" class="charts"></div>
+        <div id="chart_div3" class="charts"></div>
+        <div id="chart_div4" class="charts"></div>
 
-</form>
 
-{% endif %}
+    {% endif %}
 
- {% endblock %}
+{% endblock %}
 
- {% block scripts %}
-<script>
-  $(document).ready(function() {
-    var date_input = $('input[id="date"]');
-    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-    date_input.datepicker({
-      format: 'dd/mm/yyyy',
-      container: container,
-      todayHighlight: true,
-      autoclose: true,
-    })
-  })
-</script>
+{% block scripts %}
 
-<script type="text/javascript">
-  var data_fromDatabase = [];
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date_input = $('input[id="date"]');
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            })
+        });
 
-  {%for PR in by_closedPR %}
-  data_fromDatabase.push([
-    new Date(parse_time("{{ PR.created_at }}")),
-    new Date(parse_time("{{ PR.merged_at }}")),
-    "{{ PR.number}}",
-    (new Date(parse_time("{{ PR.merged_at}}")) - new Date(parse_time("{{ PR.created_at }}"))) / (1000 * 60 * 60),
-    "{{ PR.title }}"
-  ]);
-  {% endfor %}
 
-  google.charts.load('current', {
-    packages: ['corechart', 'bar']
-  });
+        var data_fromDatabase = [];
+        $.getJSON('/data', function (data) {
+            for (var i = 0; i < data.length; i++) {
+                data_fromDatabase.push([
+                    new Date(data[i]["fields"]["created_at"]),
+                    new Date(data[i]["fields"]["merged_at"]),
+                    "" + data[i]["fields"]["number"],
+                    (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
+                    "" + data[i]["fields"]["title"]])
+            }
 
-  google.charts.setOnLoadCallback(bySpeed);
-  /*google.charts.setOnLoadCallback(perMonth);
-   google.charts.setOnLoadCallback(perMonthChanges);
-   google.charts.setOnLoadCallback(singlePR_perTime);
-   google.charts.setOnLoadCallback(singlePR_oneByone);
+        google.charts.load('current', {
+            packages: ['corechart', 'bar']
+        });
 
-   google.charts.load('current', {'packages': ['timeline']});
-   google.charts.setOnLoadCallback(timelineOfMerges);
-   */
-</script>
+        google.charts.setOnLoadCallback(bySpeed);
+
+        });
+
+
+
+    </script>
 {% endblock %}

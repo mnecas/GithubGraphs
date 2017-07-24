@@ -8,6 +8,10 @@ from datetime import datetime
 from dateutil.parser import parse
 from time import gmtime, strftime
 from django.utils import timezone
+from django.core.serializers import serialize
+from django.http import JsonResponse, HttpResponse
+
+
 def index(request):
     if request.method == "POST":
         if (not request.POST.get('change_graph', False)):
@@ -18,9 +22,9 @@ def index(request):
             if (not 'githubUser' in request.session) and (not 'githubRepo' in request.session):
                 request.session['githubUser'] = user
                 request.session['githubRepo'] = repo
+                request.session['branche'] = "all"
 
             if not Website.objects.filter(user=user, repository=repo).exists():
-
 
                 issue_cursor = ""
                 pr_cursor = ""
@@ -59,12 +63,12 @@ def index(request):
 
                 '''
 
-                headers = {'Authorization': 'token 971795fe762eb1fbcbd3308aa72e69960da05a2c'}
+                headers = {'Authorization': 'token '}
 
                 pr_edges = [""]
                 r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                                           headers=headers).json()
-                if r2['data']['repository']!=None:
+                                   headers=headers).json()
+                if r2['data']['repository'] != None:
                     Website(repository=repo, user=user).save()
                     while pr_edges != []:
                         localtime = time.asctime(time.localtime(time.time()))
@@ -99,7 +103,9 @@ def index(request):
                             PR(website=Website.objects.get(repository=repo), number=number, created_at=created_at,
                                state=state,
                                title=title, merged_at=merged_at, updated_at=updated_at,
-                               branche=Branche.objects.get_or_create(baseRefName=baseRefName,website=Website.objects.get(repository=repo))[0]).save()
+                               branche=Branche.objects.get_or_create(baseRefName=baseRefName,
+                                                                     website=Website.objects.get(repository=repo))[
+                                   0]).save()
 
                             pr_cursor = pr['cursor']
 
@@ -163,36 +169,19 @@ def index(request):
                            'badInformation': False
                            })
     elif request.method == "GET":
-
+        top=request.GET.get('topDate', '')
+        btm=request.GET.get('btmDate', '')
+        branche=request.GET.get('branche', '')
+        request.session['topDate'] = top
+        request.session['btmDate'] = btm
+        request.session['branche'] = branche
         try:
-            topDate = request.GET.get('topDate', '')
-            btmDate = request.GET.get('btmDate', '')
-            branche = request.GET.get('branche', '')
-            if topDate == '':
-                topDate = "1/1/2050"
-            if btmDate == '':
-                btmDate = "1/1/1950"
-            if branche == '' or branche == 'all':
-                request.session['branche'] = 'all'
-                by_closed = PR.objects.filter(website__repository=request.session['githubRepo'],
-                                              merged_at__lt=datetime.strptime(topDate, "%d/%m/%Y"),
-                                              merged_at__gt=datetime.strptime(btmDate, "%d/%m/%Y")).order_by(
-                    "merged_at")
-            else:
-                request.session['branche'] = branche
-                by_closed = PR.objects.filter(website__repository=request.session['githubRepo'],
-                                              branche__baseRefName=branche,
-                                              merged_at__lt=datetime.strptime(topDate, "%d/%m/%Y"),
-                                              merged_at__gt=datetime.strptime(btmDate, "%d/%m/%Y")).order_by(
-                    "merged_at")
-
             return render(request, '../templates/index.html',
-                              {'haveData': True,
-                               'by_closedPR': by_closed,
-
-                               'branches': Branche.objects.filter(website__repository=request.session['githubRepo']),
-                               'githubRepo': request.session['githubRepo'], "githubUser": request.session['githubUser']
-                               })
+                          {'haveData': True,
+                           'topDate':top,'btmDate':btm,'branche':branche,
+                           'branches': Branche.objects.filter(website__repository=request.session['githubRepo']),
+                           'githubRepo': request.session['githubRepo'], "githubUser": request.session['githubUser']
+                           })
         except Exception as exp:
             print(exp)
             return render(request, '../templates/index.html',
@@ -217,12 +206,12 @@ def issues(request):
 def info(request):
     if request.method == "GET":
         if Issue.objects.filter(website__repository=request.session['githubRepo']).count() != 0:
-            if request.session['branche']=='all':
+            if request.session['branche'] == 'all':
                 closed = PR.objects.filter(
                     website__repository=request.session['githubRepo']).order_by(
                     "merged_at")
             else:
-                closed=PR.objects.filter(
+                closed = PR.objects.filter(
                     website__repository=request.session['githubRepo'],
                     branche__baseRefName=request.session['branche']).order_by(
                     "merged_at")
@@ -231,6 +220,37 @@ def info(request):
                            'by_closedIssue': Issue.objects.filter(
                                website__repository=request.session['githubRepo']).order_by(
                                "number"),
-                           'by_closedPR':closed ,
+                           'by_closedPR': closed,
                            'githubRepo': request.session['githubRepo'], "githubUser": request.session['githubUser']
                            })
+
+
+def data(request):
+    by_closed=[]
+    try:
+        topDate=request.session['topDate']
+        btmDate=request.session['btmDate']
+        branche=request.session['branche']
+
+        if topDate == '':
+            topDate = "1/1/2050"
+        if btmDate == '':
+            btmDate = "1/1/1950"
+        if branche == '' or branche == 'all':
+            by_closed = PR.objects.filter(website__repository=request.session['githubRepo'],
+                                          merged_at__lt=datetime.strptime(topDate, "%d/%m/%Y"),
+                                          merged_at__gt=datetime.strptime(btmDate, "%d/%m/%Y")).order_by("merged_at")
+        else:
+            by_closed = PR.objects.filter(website__repository=request.session['githubRepo'],
+                                          branche__baseRefName=branche,
+                                          merged_at__lt=datetime.strptime(topDate, "%d/%m/%Y"),
+                                          merged_at__gt=datetime.strptime(btmDate, "%d/%m/%Y")).order_by("merged_at")
+
+    except Exception as e:
+        print(e)
+
+    pr_josn = []
+    for pr in by_closed:
+        pr_josn.append(pr)
+    serialized_object = serialize('json', pr_josn)
+    return HttpResponse(serialized_object, content_type='application/json')

@@ -26,25 +26,25 @@
         var githubUser = '{{ githubUser }}';
         var githubRepo = '{{ githubRepo }}';
 
-        {% for PR in by_closedPR %}
-           data_fromDatabase.push([
-                new Date(parse_time("{{ PR.created_at }}")),
-                new Date(parse_time("{{ PR.merged_at }}")),
-                "{{ PR.number}}",
-                (new Date(parse_time("{{ PR.merged_at}}")) - new Date(parse_time("{{ PR.created_at }}"))) / (1000 * 60 * 60),
-                "{{ PR.title }}"
-            ]);
-        {% endfor %}
+        $.getJSON('../data', function (data) {
+            for (var i = 0; i < data.length; i++) {
+                data_fromDatabase.push([
+                    new Date(data[i]["fields"]["created_at"]),
+                    new Date(data[i]["fields"]["merged_at"]),
+                    "" + data[i]["fields"]["number"],
+                    (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
+                    "" + data[i]["fields"]["title"]])
+            }
 
+            if (week === "") {
+                google.charts.load('current', {packages: ['corechart', 'bar']});
+                google.charts.setOnLoadCallback(bySpeedWITHDATE);
+            } else {
+                google.charts.load('current', {'packages': ['table']});
+                google.charts.setOnLoadCallback(drawTable);
+            }
+        });
 
-
-        if (week === "") {
-            google.charts.load('current', {packages: ['corechart', 'bar']});
-            google.charts.setOnLoadCallback(bySpeedWITHDATE);
-        }else{
-            google.charts.load('current', {'packages': ['table']});
-            google.charts.setOnLoadCallback(drawTable);
-        }
 
         //google.charts.load('current', {'packages': ['table']});
         //google.charts.setOnLoadCallback(drawTable);

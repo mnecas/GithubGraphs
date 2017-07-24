@@ -32,7 +32,7 @@ class PR(models.Model):
     updated_at=models.DateTimeField(default=now, blank=True)
 
     def __str__(self):
-        return str(self.title)
+        return str(self.merged_at)
 
 
 class Issue(models.Model):

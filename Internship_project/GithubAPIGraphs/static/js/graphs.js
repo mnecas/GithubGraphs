@@ -263,7 +263,7 @@ function bySpeed() {
             easing: 'out'
         },
         vAxis: {
-            logScale: true,
+            logScale: false,
             scaleType: "mirrorLog",
             title: 'Hours'
         }
