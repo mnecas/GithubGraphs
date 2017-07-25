@@ -7,8 +7,8 @@
 {% block content %}
 
     {% if haveData %}
-
         <h3 class="col-md-offset-1">{{ githubRepo }}</h3>
+        <button id="changeScale" class="btn col-md-offset-10 btn-default row">Change scale</button>
         <form id="dateRangeForm" method="GET" action="{% url 'index' %}" class="form-horizontal">
 
             {% csrf_token %}

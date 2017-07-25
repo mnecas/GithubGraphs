@@ -5,9 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div id="chart_div80" class="charts"></div>
-    <div id="information"></div>
-    {{ branche }}
+    <h3 class="col-md-offset-1">{{ githubRepo }}</h3>
 {% endblock %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% block scripts %}
@@ -38,10 +36,12 @@
 
             if (week === "") {
                 google.charts.load('current', {packages: ['corechart', 'bar']});
-                google.charts.setOnLoadCallback(bySpeedWITHDATE);
+                google.charts.setOnLoadCallback(bySpeed_per_week);
+                $("body").append('<button id="changeScale" class="btn col-md-offset-10 btn-default">Change scale</button> <div id="chart_div80" class="charts"></div>');
             } else {
                 google.charts.load('current', {'packages': ['table']});
                 google.charts.setOnLoadCallback(drawTable);
+                $("body").append('<div id="information"></div>');
             }
         });
 

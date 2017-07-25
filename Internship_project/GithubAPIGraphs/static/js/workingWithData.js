@@ -24,68 +24,6 @@ function get_week(date) {
         return 5
     }
 }
-function is_in_list(list, user) {
-    for (var i = 0; i < list.length; i++) {
-        if (list[i] === user) {
-            return true
-        }
-    }
-    return false
-}
-function get_count_of_months(data) {
-    var counter = 0;
-    for (var i = 0; i < data.length - 1; i++) {
-        if (data[i][MERGED_AT].getMonth() !== data[i + 1][MERGED_AT].getMonth()) {
-            counter += 1;
-        }
-
-    }
-    return counter;
-
-}
-function get_merged_by_user(data) {
-    var _list_of_users = [];
-    var pomocne_pole = [];
-    for (var i = 0; i < data.length - 1; i++) {
-        var all_usersInMonth = get_all_users_in_month(data, data[i][MERGED_AT]);
-        if ((data[i][MERGED_AT].getMonth() !== data[i + 1][MERGED_AT].getMonth())) {
-            var pomocne_pomocne_pole = [];
-            pomocne_pomocne_pole.push(data[i][MERGED_AT]);
-            for (var x = 0; x < all_usersInMonth.length; x++) {
-                pomocne_pole.push(all_usersInMonth[x]);
-                pomocne_pole.push(get_count_user_in_month(data, data[i][MERGED_AT], all_usersInMonth[x]));
-            }
-            pomocne_pomocne_pole.push(pomocne_pole);
-            _list_of_users.push(pomocne_pomocne_pole);
-
-        }
-        pomocne_pole = [];
-
-    }
-    return _list_of_users;
-}
-function get_count_user_in_month(data, date, user) {
-    var counter = 0;
-    for (var i = 0; i < data.length; i++) {
-        if (((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear())) && (data[i][MERGED_BY] === user)) {
-            counter += 1;
-
-        }
-    }
-    return counter;
-}
-function get_all_users_in_month(data, date) {
-    var all_users = [];
-    for (var i = 0; i < data.length; i++) {
-        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear())) {
-            if (!is_in_list(all_users, data[i][MERGED_BY])) {
-                all_users.push(data[i][MERGED_BY]);
-
-            }
-        }
-    }
-    return all_users
-}
 function get_all_info_about_usersIn_month(data, date) {
     var _all_users = [];
     for (var i = 0; i < data.length; i++) {
@@ -107,9 +45,8 @@ function get_info_about_dataByMonth(data) {
             _vedlejsi.push(data[i]);
         }
     }
-    _vedlejsi.push(data[data.length-1]);
+    _vedlejsi.push(data[data.length - 1]);
     _infoData.push(_vedlejsi);
-    console.log(_infoData)
     return _infoData
 }
 function get_info_by_how_long_before_merged(data) {
@@ -298,59 +235,21 @@ function get_data_by_speed_to_graph(data) {
         }
         pole.push([new Date(date.getYear() + 1900, date.getMonth()), _speeds[i][0].length, _speeds[i][1].length, _speeds[i][2].length, _speeds[i][3].length, _speeds[i][4].length, _speeds[i][5].length, _speeds[i][6].length, _speeds[i][7].length])
     }
-    if(pole.length===1){
-        pole.push([new Date(date.getYear() + 1900, date.getMonth()-1),null,null,null,null,null,null,null,null])
+    if (pole.length === 1) {
+        pole.push([new Date(date.getYear() + 1900, date.getMonth() - 1), null, null, null, null, null, null, null, null])
     }
     return pole
 }
-function get_data_by_speed_to_graphWITHDATE(data, date) {
+function get_data_by_speed_to_graphPERWEEK(data, date) {
     var pole = [];
     var _speeds = get_info_by_how_long_before_mergedWITHDATE(data, date);
+    console.log(_speeds)
     for (var ch = 0; ch < 5; ch++) {
-        pole.push([ch, null, null, null, null, null, null, null, null])
+        pole.push([ch+1, null, null, null, null, null, null, null, null])
     }
     for (var i = 0; i < _speeds.length; i++) {
-        pole[get_week(_speeds[i][0][MERGED_AT]) - 1] = [get_week(_speeds[i][0][MERGED_AT]), _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8]]
+        pole[get_week(_speeds[i][0][MERGED_AT])-1] = [get_week(_speeds[i][0][MERGED_AT]), _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8]]
     }
     return pole
 
-}
-function get_info_by_how_long_before_mergedINWEEK(data, date, week) {
-    var pole = [];
-    var _infoData = get_info_about_dataByMonth(data);
-
-    for (var i = 0; i < _infoData.length; i++) {
-
-        for (var ch = 0; ch < _infoData[i].length - 1; ch++) {
-
-            if ((_infoData[i][ch][MERGED_AT].getMonth() === date.getMonth()) && (_infoData[i][ch][MERGED_AT].getYear() === date.getYear()) && (get_week(_infoData[i][ch][MERGED_AT]) === parseInt(week))) {
-                var _date = _infoData[i][ch][MERGED_AT];
-                if (_infoData[i][ch][DIFFERENCE] < 3) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#009900']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 12) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#00cc00']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 24) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#99ff33']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 48) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#ffff00']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 168) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#ff9933']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 336) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#ff6600']);
-                }
-                else if (_infoData[i][ch][DIFFERENCE] < 720) {
-                    pole.push([_date, _infoData[i][ch][DIFFERENCE], '#ff5050']);
-                }
-                else {
-                    pole.push([_infoData[i][ch][MERGED_AT], _infoData[i][ch][DIFFERENCE], '#ff0000']);
-                }
-            }
-        }
-    }
-    return pole
 }
