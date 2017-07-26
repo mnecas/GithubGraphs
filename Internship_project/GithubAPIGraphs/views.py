@@ -1,17 +1,12 @@
-import os
 
-import sys
 from django.shortcuts import render
-import requests, dateutil.parser, json, requests, time
+import dateutil.parser, json, requests, time
 from .models import PR, Issue, Website, Branche
 from datetime import datetime
-from dateutil.parser import parse
-from time import gmtime, strftime
-from django.utils import timezone
 from django.core.serializers import serialize
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 
-
+token=""
 def index(request):
     if request.method == "POST":
         if (not request.POST.get('change_graph', False)):
@@ -26,6 +21,8 @@ def index(request):
 
             if not Website.objects.filter(user=user, repository=repo).exists():
 
+                query_issue = ""
+                query_pr = ""
                 issue_cursor = ""
                 pr_cursor = ""
                 query = '''
@@ -59,86 +56,95 @@ def index(request):
                     }
                   }
                 }
-
-
                 '''
 
-                headers = {'Authorization': 'token '}
+                headers = {'Authorization': 'token '+token}
 
                 pr_edges = [""]
+                issue_edges = [""]
                 r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                    headers=headers).json()
                 if r2['data']['repository'] != None:
                     Website(repository=repo, user=user).save()
-                    while pr_edges != []:
+                    while pr_edges != [] or issue_edges != [] :
                         localtime = time.asctime(time.localtime(time.time()))
                         print(localtime)
                         r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                            headers=headers).json()
 
                         data = r2['data']['repository']
-                        for issue in data['issues']['edges']:
-                            state = issue['node']['state']
-                            number = issue['node']['number']
-                            created_at = dateutil.parser.parse(issue['node']['createdAt'])
+                        if issue_edges != []:
+                            issue_edges = data['issues']['edges']
+                            for issue in issue_edges:
+                                state = issue['node']['state']
+                                number = issue['node']['number']
+                                created_at = dateutil.parser.parse(issue['node']['createdAt'])
 
-                            title = issue['node']['title']
-                            Issue(website=Website.objects.get(repository=repo), number=number,
-                                  created_at=created_at, state=state, title=title).save()
-                            print(number)
-                            issue_cursor = issue['cursor']
+                                title = issue['node']['title']
+                                issue_cursor = issue['cursor']
+                                Issue(website=Website.objects.get(repository=repo), number=number,
+                                      created_at=created_at, state=state, title=title,cursor=issue_cursor).save()
+                                print(number)
+                                query_issue ='''
+                                                issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
+                                                         edges {
+                                                           cursor
+                                                           node {
+                                                         number
+                                                         createdAt
+                                                         state
+                                                         title
 
-                        pr_edges = data['pullRequests']['edges']
-                        for pr in data['pullRequests']['edges']:
-                            state = pr['node']['state']
-                            number = pr['node']['number']
-                            created_at = dateutil.parser.parse(pr['node']['createdAt'])
-                            merged_at = dateutil.parser.parse(pr['node']['mergedAt'])
-                            updated_at = dateutil.parser.parse(pr['node']['updatedAt'])
-                            baseRefName = pr['node']['baseRefName']
+                                                           }
+                                                         }
+                                                       }'''
+                        else:
+                            query_issue =""
 
-                            print(number)
-                            title = pr['node']['title']
+                        if pr_edges != []:
+                            pr_edges = data['pullRequests']['edges']
+                            for pr in pr_edges:
+                                state = pr['node']['state']
+                                number = pr['node']['number']
+                                created_at = dateutil.parser.parse(pr['node']['createdAt'])
+                                merged_at = dateutil.parser.parse(pr['node']['mergedAt'])
+                                updated_at = dateutil.parser.parse(pr['node']['updatedAt'])
+                                baseRefName = pr['node']['baseRefName']
 
-                            PR(website=Website.objects.get(repository=repo), number=number, created_at=created_at,
-                               state=state,
-                               title=title, merged_at=merged_at, updated_at=updated_at,
-                               branche=Branche.objects.get_or_create(baseRefName=baseRefName,
-                                                                     website=Website.objects.get(repository=repo))[
-                                   0]).save()
+                                print(number)
+                                title = pr['node']['title']
+                                pr_cursor = pr['cursor']
 
-                            pr_cursor = pr['cursor']
+                                PR(website=Website.objects.get(repository=repo), number=number, created_at=created_at,
+                                   state=state,
+                                   title=title, merged_at=merged_at, updated_at=updated_at,cursor=pr_cursor,
+                                   branche=Branche.objects.get_or_create(baseRefName=baseRefName,
+                                                                         website=Website.objects.get(repository=repo))[
+                                       0]).save()
+                                query_pr = '''
+                                pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
+                                                                 edges {
+                                                                   cursor
+                                                                   node {
+                                                                 number
+                                                                 createdAt
+                                                                 state
+                                                                 title
+                                                                 closed
+                                                                 mergedAt
+                                                                 baseRefName
+                                                                 updatedAt
+                                                                   }
+                                                                 }}'''
+
+                        else:
+                            query_pr =""
 
                         query = '''
                         {
                           repository(owner:"''' + user + '''", name:"''' + repo + '''"){
-                            issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
-                              edges {
-                                cursor
-                                node {
-                              number
-                              createdAt
-                              state
-                              title
-
-                                }
-                              }
-                            }
-                            pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
-                              edges {
-                                cursor
-                                node {
-                              number
-                              createdAt
-                              state
-                              title
-                              closed
-                              mergedAt
-                              baseRefName
-                              updatedAt
-                                }
-                              }
-                          }
+                            '''+query_issue+'''
+                           '''+query_pr+'''
                         }
                         }
                         '''

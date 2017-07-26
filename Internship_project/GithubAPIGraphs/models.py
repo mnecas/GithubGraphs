@@ -28,17 +28,19 @@ class PR(models.Model):
     created_at = models.DateTimeField(default=now, blank=True)
     merged_at = models.DateTimeField(default=now, blank=True)
     state = models.CharField(max_length=20, default="")
+    cursor = models.CharField(max_length=50, default="")
     title = models.CharField(max_length=250, default="")
     updated_at=models.DateTimeField(default=now, blank=True)
 
     def __str__(self):
-        return str(self.merged_at)
+        return str(self.title)
 
 
 class Issue(models.Model):
     website = models.ForeignKey(Website)
     number = models.IntegerField(default=0)
     state = models.CharField(max_length=20, default="")
+    cursor = models.CharField(max_length=50, default="")
     created_at = models.DateTimeField(default=now, blank=True)
     title = models.CharField(max_length=250, default="")
 
