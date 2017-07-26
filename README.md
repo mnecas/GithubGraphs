@@ -14,5 +14,6 @@ if it doesn't work check your python version.
 It can take a lot of time because github api give me only 100 PRs per request<br/>
 
 ![alt text](img.png)
-python manage.py updates - will update all websites <br/>
+python manage.py update - will update all websites <br/>
+python manage.py update [*repo*] - update only one repo<br/> 
 That how look the graphs
