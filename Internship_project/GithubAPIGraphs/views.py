@@ -6,7 +6,7 @@ from datetime import datetime
 from django.core.serializers import serialize
 from django.http import HttpResponse
 
-token=""
+token="6b53802894e7c418b3c0a36c892387a1bf532de5"
 def index(request):
     if request.method == "POST":
         if (not request.POST.get('change_graph', False)):
