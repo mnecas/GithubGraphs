@@ -24,15 +24,50 @@ function get_week(date) {
         return 5
     }
 }
+
+function get_nuberOfColumn(closed_after) {
+
+    if (closed_after < 3) {
+        return 1;
+    }
+    else if (closed_after < 12) {
+        return 2;
+    }
+    else if (closed_after < 24) {
+        return 3;
+    }
+    else if (closed_after < 48) {
+        return 4;
+    }
+    else if (closed_after < 168) {
+        return 5;
+    }
+    else if (closed_after < 336) {
+        return 6;
+    }
+    else if (closed_after < 720) {
+        return 7;
+    }
+    else {
+        return 8;
+    }
+}
+
 function get_all_info_about_usersIn_month(data, date) {
     var _all_users = [];
     for (var i = 0; i < data.length; i++) {
-        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_week(data[i][MERGED_AT]) === parseInt(week))) {
-            _all_users.push([data[i][MERGED_AT], parseInt(data[i][NUMBER]), data[i][DIFFERENCE], data[i][TITLE]]);
+        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_week(data[i][MERGED_AT]) === parseInt(week)) && (get_nuberOfColumn(data[i][DIFFERENCE]) === _column)) {
+            if ((_column === 1) || (_column === 2) || (_column === 3)) {
+                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round(data[i][DIFFERENCE] * 10) / 10 + " h", data[i][TITLE]]);
+            }
+            else {
+                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round((data[i][DIFFERENCE] / 24) * 10) / 10 + " d", data[i][TITLE]]);
+            }
         }
     }
     return _all_users
 }
+
 function get_info_about_dataByMonth(data) {
     var _infoData = [];
     var _vedlejsi = [];
@@ -49,6 +84,7 @@ function get_info_about_dataByMonth(data) {
     _infoData.push(_vedlejsi);
     return _infoData
 }
+
 function get_info_by_how_long_before_merged(data) {
     var _speed_1 = [];
     var _speed_2 = [];
@@ -100,6 +136,7 @@ function get_info_by_how_long_before_merged(data) {
 
     return pole
 }
+
 function get_info_by_how_long_before_mergedWITHDATE(data, date) {
     var _counter_1 = 0;
     var _counter_2 = 0;
@@ -222,6 +259,7 @@ function get_info_by_how_long_before_mergedWITHDATE(data, date) {
     }
     return pole
 }
+
 function get_data_by_speed_to_graph(data) {
     var pole = [];
     var date;
@@ -240,16 +278,26 @@ function get_data_by_speed_to_graph(data) {
     }
     return pole
 }
+
 function get_data_by_speed_to_graphPERWEEK(data, date) {
     var pole = [];
     var _speeds = get_info_by_how_long_before_mergedWITHDATE(data, date);
     console.log(_speeds)
-    for (var ch = 0; ch < 5; ch++) {
-        pole.push([ch+1, null, null, null, null, null, null, null, null])
+    for (var ch = 0; ch < Math.floor(new Date(_speeds[0][0][MERGED_AT].getYear() + 1900, _speeds[0][0][MERGED_AT].getMonth(), 0).getDate() / 7); ch++) {
+        pole.push(["" + new Date(_speeds[ch][0][MERGED_AT].getYear() + 1900, _speeds[ch][0][MERGED_AT].getMonth(), get_week(_speeds[ch][0][MERGED_AT]) * 7), null, null, null, null, null, null, null, null])
     }
     for (var i = 0; i < _speeds.length; i++) {
-        pole[get_week(_speeds[i][0][MERGED_AT])-1] = [get_week(_speeds[i][0][MERGED_AT]), _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8]]
-    }
-    return pole
+        if (i === _speeds.length - 1) {
+            if (new Date(_speeds[i][0][MERGED_AT].getYear() + 1900, _speeds[i][0][MERGED_AT].getMonth(), get_week(_speeds[i][0][MERGED_AT]) * 7).getDate() < new Date(_speeds[_speeds.length-1][0][MERGED_AT].getYear() + 1900, _speeds[_speeds.length-1][0][MERGED_AT].getMonth(), 0).getDate()) {
+                pom=(new Date(_speeds[i][0][MERGED_AT].getYear() + 1900, _speeds[i][0][MERGED_AT].getMonth()+1, 0) + "").split(" ");
+            }
+        } else {
+            pom=(new Date(_speeds[i][0][MERGED_AT].getYear() + 1900, _speeds[i][0][MERGED_AT].getMonth(), get_week(_speeds[i][0][MERGED_AT]) * 7) + "").split(" ");
 
-}
+        }
+        str_date=pom[1]+" "+pom[2]+" "+pom[3]
+        pole[get_week(_speeds[i][0][MERGED_AT]) - 1] = [str_date, _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8]]
+    }
+        return pole
+
+    }

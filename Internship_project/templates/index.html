@@ -7,8 +7,11 @@
 {% block content %}
 
     {% if haveData %}
-        <h3 class="col-md-offset-1">{{ githubRepo }}</h3>
-        <button id="changeScale" class="btn col-md-offset-10 btn-default row">Change scale</button>
+        <div class="row">
+            <h3 class="col-md-offset-1"><a href="http://www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a
+                    href="http://www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
+        </div>
+        <button id="changeScale" class="btn col-md-offset-10 btn-default row">LIN scale</button>
         <form id="dateRangeForm" method="GET" action="{% url 'index' %}" class="form-horizontal">
 
             {% csrf_token %}
@@ -16,23 +19,23 @@
                 <div class="col-xs-5 date">
                     <label class="col-xs-3 control-label">FROM</label>
                     <div class="input-group input-append date" id="dateRangePicker">
-                        <input type="text" class="form-control" name="btmDate" id="date" placeholder="{{ btmDate }}" title="btmDate"/>
+                        <input type="text" class="date-picker" name="btmDate" placeholder="{{ btmDate }}"
+                               title="btmDate"/>
                     </div>
                     <div class="date_margin">
                         <label class="col-xs-3 control-label">TO</label>
                         <div class="input-group input-append date" id="dateRangePicker">
-                            <input type="text" class="form-control" name="topDate" id="date" placeholder="{{ topDate }}"  title="topDate"/>
+                            <input type="text" class="date-picker" name="topDate" placeholder="{{ topDate }}"
+                                   title="topDate"/>
                         </div>
                     </div>
-                    <div class="col-md-offset-2 col-xs-5 date_margin special">
+                    <div class="col-xs-4 date_margin">
                         <select class="form-control" name="branche">
-
-                            <option value="all">all</option>
                             {% for br in branches %}
                                 {% if br.baseRefName == branche %}
-                                <option value="{{ br }}" selected>{{ br }}</option>
+                                    <option value="{{ br }}" selected>{{ br }}</option>
                                 {% else %}
-                                <option value="{{ br }}">{{ br }}</option>
+                                    <option value="{{ br }}">{{ br }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -57,40 +60,38 @@
 
 {% block scripts %}
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var date_input = $('input[id="date"]');
-            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-            date_input.datepicker({
-                format: 'dd/mm/yyyy',
-                container: container,
-                todayHighlight: true,
-                autoclose: true,
-            })
-        });
+    {% if haveData %}
+        <script type="text/javascript">
+            $(function() {
+    $('.date-picker').datepicker( {
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'dd/mm/yy',
+        onClose: function(dateText, inst) {
+             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+        }
+    });
+});
+            var data_fromDatabase = [];
+            $.getJSON('/data', function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    data_fromDatabase.push([
+                        new Date(data[i]["fields"]["created_at"]),
+                        new Date(data[i]["fields"]["merged_at"]),
+                        "" + data[i]["fields"]["number"],
+                        (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
+                        "" + data[i]["fields"]["title"]])
+
+                }
+                google.charts.load('current', {packages: ['corechart', 'bar']});
+                google.charts.setOnLoadCallback(bySpeed);
+
+            });
 
 
-        var data_fromDatabase = [];
-        $.getJSON('/data', function (data) {
-            for (var i = 0; i < data.length; i++) {
-                data_fromDatabase.push([
-                    new Date(data[i]["fields"]["created_at"]),
-                    new Date(data[i]["fields"]["merged_at"]),
-                    "" + data[i]["fields"]["number"],
-                    (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
-                    "" + data[i]["fields"]["title"]])
-            
-            }
-
-        google.charts.load('current', {
-            packages: ['corechart', 'bar']
-        });
-
-        google.charts.setOnLoadCallback(bySpeed);
-
-        });
-
-
-
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}

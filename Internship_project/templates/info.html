@@ -5,7 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <h3 class="col-md-offset-1">{{ githubRepo }}</h3>
+        <div class="row">
+            <h3 class="col-md-offset-1"><a href="http://www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="http://www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
+        </div>
+        <button id="changeScale" class="btn col-md-offset-10 btn-default">LIN scale</button> <div id="chart_div80" class="charts"></div>
 {% endblock %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% block scripts %}
@@ -13,10 +16,7 @@
         var get_id = /id=([^&#=]*)/.exec(window.location.search);
         var get_date = /date=([^&#=]*)/.exec(window.location.search);
         var week = "";
-        try {
-            week = /week=([^&#=]*)/.exec(window.location.search)[1];
-        } catch (e) {
-        }
+
         var id = get_id[1];
         var date = new Date(window.decodeURIComponent(get_date[1]));
 
@@ -34,15 +34,11 @@
                     "" + data[i]["fields"]["title"]])
             }
 
-            if (week === "") {
-                google.charts.load('current', {packages: ['corechart', 'bar']});
-                google.charts.setOnLoadCallback(bySpeed_per_week);
-                $("body").append('<button id="changeScale" class="btn col-md-offset-10 btn-default">Change scale</button> <div id="chart_div80" class="charts"></div>');
-            } else {
-                google.charts.load('current', {'packages': ['table']});
-                google.charts.setOnLoadCallback(drawTable);
-                $("body").append('<div id="information"></div>');
-            }
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.load('current', {'packages': ['table']});
+            google.charts.setOnLoadCallback(bySpeed_per_week);
+
+
         });
 
 

@@ -19,38 +19,38 @@ class Command(BaseCommand):
         pr_cursor = ""
         headers = {'Authorization': 'token ' + token}
         query = '''
-                           {
-                             repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
-                               issues(first: 100 states:CLOSED after:"''' + _issue.cursor + '''") {
-                                 edges {
-                                   cursor
-                                   node {
-                                 number
-                                 createdAt
-                                 state
-                                 title
+               {
+                 repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
+                   issues(first: 100 states:CLOSED after:"''' + _issue.cursor + '''") {
+                     edges {
+                       cursor
+                       node {
+                     number
+                     createdAt
+                     state
+                     title
 
-                                   }
-                                 }
-                               }
-                               pullRequests(first: 100 states:MERGED after:"''' + _pr.cursor + '''") {
-                                 edges {
-                                   cursor
-                                   node {
-                                     number
-                                     createdAt
-                                     state
-                                     title
-                                     closed
-                                     mergedAt
-                                     baseRefName
-                                     updatedAt
-                                   }
-                                 }
-                             }
-                           }
-                           }
-                           '''
+                       }
+                     }
+                   }
+                   pullRequests(first: 100 states:MERGED after:"''' + _pr.cursor + '''") {
+                     edges {
+                       cursor
+                       node {
+                         number
+                         createdAt
+                         state
+                         title
+                         closed
+                         mergedAt
+                         baseRefName
+                         updatedAt
+                       }
+                     }
+                 }
+               }
+               }
+               '''
         r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                            headers=headers).json()
         pr_edges = r2['data']['repository']['pullRequests']['edges']
@@ -118,14 +118,14 @@ class Command(BaseCommand):
                                          }
                                      }'''
             query = '''
-                                   {
-                                     repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
-                                       ''' + query_issue + '''
-                                       ''' + query_pr + '''
+                   {
+                     repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
+                       ''' + query_issue + '''
+                       ''' + query_pr + '''
 
-                                    }
-                                   }
-                                   '''
+                    }
+                   }
+                   '''
     def handle(self, *args, **options):
         _website = options.get('website', None)
 
@@ -135,9 +135,7 @@ class Command(BaseCommand):
                 self.request(web)
         else:
             try:
-                web=Website.objects.get(repository=_website)
-                print(web)
+                web=Website.objects.get(user= _website.split("/")[0],repository=_website.split("/")[1])
                 self.request(web)
             except Exception as e:
                 print("Invalid repository")
-                print(e)
