@@ -4,8 +4,9 @@
 var dateAfterClick;
 var typeAfterClick;
 var weekAfterClick;
-var time_of_anination=1000;
-var width_ofBar ="90%";
+var time_of_anination = 1000;
+var width_ofBar = "90%";
+
 function drawTable() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'ID');
@@ -31,9 +32,11 @@ function drawTable() {
 
     function selectHandler(e) {
         click = data.getValue(table.getSelection()[0].row, 1);
-        window.open("https://github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#",""));
+        window.open("https://github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""));
+        chart.setSelection();
     }
 }
+
 function bySpeed_per_week() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'week');
@@ -45,6 +48,7 @@ function bySpeed_per_week() {
     data.addColumn('number', '7-14d');
     data.addColumn('number', '14-30d');
     data.addColumn('number', '30+d');
+    data.addColumn('number', 'count of all');
     data.addRows(get_data_by_speed_to_graphPERWEEK(data_fromDatabase, date));
 
 
@@ -54,8 +58,11 @@ function bySpeed_per_week() {
         //isStacked: true,f
         title: "Weeks",
         bar: {groupWidth: width_ofBar},
-        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000'],
-        hAxis: {}, animation: {
+        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000', '#000000'],
+        seriesType: 'bars',
+        series: {8: {type: 'line'}},
+        hAxis: {},
+        animation: {
             startup: true,
             duration: time_of_anination,
             easing: 'out'
@@ -68,7 +75,7 @@ function bySpeed_per_week() {
     };
 
 
-    var chart = new google.visualization.ColumnChart(
+    var chart = new google.visualization.ComboChart(
         document.getElementById('chart_div80'));
     //var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
     var changes = true;
@@ -78,14 +85,14 @@ function bySpeed_per_week() {
             options.vAxis.logScale = true;
             options.vAxis.scaleType = "mirrorLog";
             changes = false;
-            changeScale.innerHTML ="LOG scale"
+            changeScale.innerHTML = "LOG scale"
 
         }
         else {
             options.vAxis.logScale = false;
             options.vAxis.scaleType = "";
             changes = true;
-            changeScale.innerHTML ="LIN scale"
+            changeScale.innerHTML = "LIN scale"
 
         }
         chart.draw(data, options);
@@ -95,15 +102,25 @@ function bySpeed_per_week() {
     chart.draw(data, options);
 
     google.visualization.events.addListener(chart, 'select', selectHandler);
-     $("body").append('<div id="information" style="margin-left: 200px"></div>');
+    $("body").append('<div id="information" style="margin-left: 200px"></div>');
 
     function selectHandler(e) {
 
-        week=Math.ceil(parseInt(data.getValue(chart.getSelection()[0].row, 0).split(" ")[1])/7);
-        _column =chart.getSelection()[0].column;
-        google.charts.setOnLoadCallback(drawTable);
+        if (chart.getSelection().length > 0) {
+            if (typeof chart.getSelection()[0].row === 'object') {
+                chart.setSelection();
+                return;
+            }
+        }
+        week = Math.ceil(parseInt(data.getValue(chart.getSelection()[0].row, 0).split(" ")[1]) / 7);
+        _column = chart.getSelection()[0].column;
+        if (_column < 9) {
+            google.charts.setOnLoadCallback(drawTable);
+        }
+        chart.setSelection();
     }
 }
+
 function bySpeed() {
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Closed at');
@@ -115,6 +132,7 @@ function bySpeed() {
     data.addColumn('number', '7-14d');
     data.addColumn('number', '14-30d');
     data.addColumn('number', '30+d');
+    data.addColumn('number', 'count of all');
     data.addRows(get_data_by_speed_to_graph(data_fromDatabase));
 
     var options = {
@@ -123,7 +141,9 @@ function bySpeed() {
         //isStacked: true,
         title: "Per one month",
         bar: {groupWidth: width_ofBar},
-        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000'],
+        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000', '#000000'],
+        seriesType: 'bars',
+        series: {8: {type: 'line'}},
         hAxis: {
             format: 'M/yyyy'
         }, animation: {
@@ -141,7 +161,7 @@ function bySpeed() {
 
     view.setColumns([0]);
 
-    var chart = new google.visualization.ColumnChart(
+    var chart = new google.visualization.ComboChart(
         document.getElementById('chart_div80'));
     //var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
     var changes = true;
@@ -151,14 +171,14 @@ function bySpeed() {
             options.vAxis.logScale = true;
             options.vAxis.scaleType = "mirrorLog";
             changes = false;
-            changeScale.innerHTML ="LOG scale"
+            changeScale.innerHTML = "LOG scale"
 
         }
         else {
             options.vAxis.logScale = false;
             options.vAxis.scaleType = "";
             changes = true;
-            changeScale.innerHTML ="LIN scale"
+            changeScale.innerHTML = "LIN scale"
 
         }
         chart.draw(data, options);
@@ -170,6 +190,12 @@ function bySpeed() {
     google.visualization.events.addListener(chart, 'select', selectHandler);
 
     function selectHandler(e) {
+        if (chart.getSelection().length > 0) {
+            if (typeof chart.getSelection()[0].row === 'object') {
+                chart.setSelection();
+                return;
+            }
+        }
         dateAfterClick = data.getValue(chart.getSelection()[0].row, 0);
         if (window.location.pathname !== "/") {
             typeAfterClick = "issue";
@@ -179,5 +205,6 @@ function bySpeed() {
             typeAfterClick = "pr";
             window.location.replace("/info?date=" + dateAfterClick + "&id=" + typeAfterClick);
         }
+        chart.setSelection();
     }
 }

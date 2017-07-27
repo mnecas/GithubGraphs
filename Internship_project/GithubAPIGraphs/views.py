@@ -239,10 +239,8 @@ def data(request):
                                           branche__baseRefName=branche,
                                           merged_at__lt=datetime.strptime(topDate, "%d/%m/%Y"),
                                           merged_at__gt=datetime.strptime(btmDate, "%d/%m/%Y")).order_by("merged_at")
-
     except Exception as e:
         print(e)
-
     pr_josn = []
     for pr in by_closed:
         pr_josn.append(pr)
