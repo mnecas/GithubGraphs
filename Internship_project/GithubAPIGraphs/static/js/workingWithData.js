@@ -61,7 +61,11 @@ function get_all_info_about_usersIn_month(data, date) {
                 _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round(data[i][DIFFERENCE] * 10) / 10 + " h", data[i][TITLE]]);
             }
             else {
-                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round((data[i][DIFFERENCE] / 24)) + " d "+Math.round((data[i][DIFFERENCE] % 24)) + " h", data[i][TITLE]]);
+                if (Math.round((data[i][DIFFERENCE] / 24)) <100) {
+                    _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT],{v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / 24)) + " d " + Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
+                }else {
+                    _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], {v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / (24*30))) + " m " +Math.round(((data[i][DIFFERENCE]/30) %24)) + " d "+ Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
+                }
             }
         }
     }

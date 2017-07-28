@@ -11,7 +11,7 @@ function drawTable() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'ID');
     data.addColumn('date', 'MERGED_AT');
-    data.addColumn('string', 'TIME TO MERGE');
+    data.addColumn('number', 'TIME TO MERGE');
     data.addColumn('string', 'TITLE');
     data.addRows(get_all_info_about_usersIn_month(data_fromDatabase, date));
     var cssClassNames = {

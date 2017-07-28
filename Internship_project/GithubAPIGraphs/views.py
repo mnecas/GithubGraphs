@@ -6,7 +6,7 @@ from datetime import datetime
 from django.core.serializers import serialize
 from django.http import HttpResponse
 
-token="e714f655b28c07bec0ee3bbb4ebacc291de84c61"
+token=""
 def index(request):
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
@@ -16,52 +16,52 @@ def index(request):
             request.session['githubRepo'] = repo
             request.session['branche'] = ""
 
-        try:
-            if not Website.objects.filter(user=user, repository=repo).exists():
-                query_issue = ""
-                query_pr = ""
-                issue_cursor = ""
-                pr_cursor = ""
-                query = '''
-                {
-                  repository(owner: "''' + user + '''", name: "''' + repo + '''") {
-                    issues(first: 100 states:CLOSED) {
-                      edges {
-                        cursor
-                        node {
-                          number
-                          createdAt
-                          state
-                          title
-                        }
-                      }
-                    }
-                     pullRequests(first: 100 states:MERGED) {
-                      edges {
-                        cursor
-                        node {
-                          number
-                          createdAt
-                          state
-                          title
-                          closed
-                          mergedAt
-                          baseRefName
-                          updatedAt
-                        }
-                      }
+
+        if not Website.objects.filter(user=user, repository=repo).exists():
+            query_issue = ""
+            query_pr = ""
+            issue_cursor = ""
+            pr_cursor = ""
+            query = '''
+            {
+              repository(owner: "''' + user + '''", name: "''' + repo + '''") {
+                issues(first: 100 states:CLOSED) {
+                  edges {
+                    cursor
+                    node {
+                      number
+                      createdAt
+                      state
+                      title
                     }
                   }
                 }
-                '''
+                 pullRequests(first: 100 states:MERGED) {
+                  edges {
+                    cursor
+                    node {
+                      number
+                      createdAt
+                      state
+                      title
+                      closed
+                      mergedAt
+                      baseRefName
+                      updatedAt
+                    }
+                  }
+                }
+              }
+            }
+            '''
 
-                headers = {'Authorization': 'token '+token}
+            headers = {'Authorization': 'token '+token}
 
-                pr_edges = [""]
-                issue_edges = [""]
-                r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                                   headers=headers).json()
-                if r2['data']['repository'] != None:
+            pr_edges = [""]
+            issue_edges = [""]
+            r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
+                               headers=headers).json()
+            if r2['data']['repository'] != None:
                     Website(repository=repo, user=user).save()
                     while pr_edges != [] or issue_edges != [] :
                         localtime = time.asctime(time.localtime(time.time()))
@@ -146,10 +146,10 @@ def index(request):
                         }
                         }
                         '''
-        except Exception as e:
-            del request.session['githubUser']
-            del request.session['githubRepo']
-            return redirect("/")
+            else:
+                del request.session['githubUser']
+                del request.session['githubRepo']
+                return redirect("/")
         return redirect("/"+user+"/"+repo+"/")
 
     elif request.method == "GET":

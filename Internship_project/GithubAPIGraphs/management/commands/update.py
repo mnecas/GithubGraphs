@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from ...models import Website,Branche,PR,Issue
 import dateutil.parser, json, requests
-token="e714f655b28c07bec0ee3bbb4ebacc291de84c61"
+token=""
 
 
 class Command(BaseCommand):
