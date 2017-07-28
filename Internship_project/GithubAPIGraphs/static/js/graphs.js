@@ -31,8 +31,7 @@ function drawTable() {
     google.visualization.events.addListener(table, 'select', selectHandler);
 
     function selectHandler(e) {
-        click = data.getValue(table.getSelection()[0].row, 0)+"";
-        console.log(click)
+        click = data.getValue(table.getSelection()[0].row, 0) + "";
         window.open("https://github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""));
         table.setSelection();
     }
@@ -187,6 +186,8 @@ function bySpeed() {
     chart.draw(data, options);
 
     google.visualization.events.addListener(chart, 'select', selectHandler);
+    $("body").append('<div id="information" style="margin-left: 200px"></div>');
+
 
     function selectHandler(e) {
         if (chart.getSelection().length > 0) {
@@ -195,9 +196,14 @@ function bySpeed() {
                 return;
             }
         }
-        dateAfterClick = data.getValue(chart.getSelection()[0].row, 0);
+        date= data.getValue(chart.getSelection()[0].row, 0);
+
         typeAfterClick = "pr";
-        window.location.href=window.location.href+"info?date=" + dateAfterClick + "&id=" + typeAfterClick;
+        _column = chart.getSelection()[0].column;
+        if (_column < 9) {
+            google.charts.load('current', {'packages': ['table']});
+            google.charts.setOnLoadCallback(drawTable);
+        }
         chart.setSelection();
     }
 }

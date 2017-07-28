@@ -56,12 +56,12 @@ function get_nuberOfColumn(closed_after) {
 function get_all_info_about_usersIn_month(data, date) {
     var _all_users = [];
     for (var i = 0; i < data.length; i++) {
-        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_week(data[i][MERGED_AT]) === parseInt(week)) && (get_nuberOfColumn(data[i][DIFFERENCE]) === _column)) {
+        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_nuberOfColumn(data[i][DIFFERENCE]) === _column)) {
             if ((_column === 1) || (_column === 2) || (_column === 3)) {
                 _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round(data[i][DIFFERENCE] * 10) / 10 + " h", data[i][TITLE]]);
             }
             else {
-                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round((data[i][DIFFERENCE] / 24) * 10) / 10 + " d", data[i][TITLE]]);
+                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round((data[i][DIFFERENCE] / 24)) + " d "+Math.round((data[i][DIFFERENCE] % 24)) + " h", data[i][TITLE]]);
             }
         }
     }
