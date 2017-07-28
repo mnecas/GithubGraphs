@@ -5,18 +5,18 @@ var DIFFERENCE = 3;
 var TITLE = 4;
 
 function get_week(date) {
-    if (date.getDate() < 7) {
+    if (date.getDate() <= 7) {
         return 1
     }
-    else if (date.getDate() < 14) {
+    else if (date.getDate() <= 14) {
         return 2
 
     }
-    else if (date.getDate() < 21) {
+    else if (date.getDate() <= 21) {
         return 3
 
     }
-    else if (date.getDate() < 28) {
+    else if (date.getDate() <= 28) {
         return 4
 
     }
@@ -271,10 +271,10 @@ function get_data_by_speed_to_graph(data) {
                 date = _speeds[i][ch][0][MERGED_AT]
             }
         }
-        pole.push([new Date(date.getYear() + 1900, date.getMonth()), _speeds[i][0].length, _speeds[i][1].length, _speeds[i][2].length, _speeds[i][3].length, _speeds[i][4].length, _speeds[i][5].length, _speeds[i][6].length, _speeds[i][7].length, _speeds[i][0].length + _speeds[i][1].length + _speeds[i][2].length + _speeds[i][3].length + _speeds[i][4].length + _speeds[i][5].length + _speeds[i][6].length + _speeds[i][7].length])
+        pole.push([new Date(date.getYear() + 1900, date.getMonth()), _speeds[i][0].length, _speeds[i][1].length, _speeds[i][2].length, _speeds[i][3].length, _speeds[i][4].length, _speeds[i][5].length, _speeds[i][6].length, _speeds[i][7].length])
     }
     if (pole.length === 1) {
-        pole.push([new Date(date.getYear() + 1900, date.getMonth() - 1), null, null, null, null, null, null, null, null, null])
+        pole.push([new Date(date.getYear() + 1900, date.getMonth() - 1), null, null, null, null, null, null, null, null])
     }
     return pole
 }
@@ -283,17 +283,18 @@ function get_data_by_speed_to_graphPERWEEK(data, date) {
     var pole = [];
     var _speeds = get_info_by_how_long_before_mergedWITHDATE(data, date);
     for (var ch = 0; ch < _speeds.length; ch++) {
-        pom = ("" + new Date(_speeds[ch][0][MERGED_AT].getYear() + 1900, _speeds[ch][0][MERGED_AT].getMonth(), get_week(_speeds[ch][0][MERGED_AT]) * 7)).split(" ")
-        pole.push([str_date = pom[1] + " " + pom[2] + " " + pom[3], null, null, null, null, null, null, null, null, null])
+        pom = ("" + new Date(_speeds[ch][0][MERGED_AT].getYear() + 1900, _speeds[ch][0][MERGED_AT].getMonth(), get_week(_speeds[ch][0][MERGED_AT]) * 7)).split(" ");
+        pole.push([str_date = pom[1] + " " + pom[2] + " " + pom[3], null, null, null, null, null, null, null, null])
     }
     for (var i = 0; i < _speeds.length; i++) {
         if (get_week(_speeds[i][0][MERGED_AT]) === 5) {
             pom = (new Date(_speeds[i][0][MERGED_AT].getYear() + 1900, _speeds[i][0][MERGED_AT].getMonth() + 1, 0) + "").split(" ");
+            str_date = pom[1] + " " + 29 + " " + pom[3] + "---" + pom[1] + " " + parseInt(pom[2]) + " " + pom[3];
         } else {
             pom = (new Date(_speeds[i][0][MERGED_AT].getYear() + 1900, _speeds[i][0][MERGED_AT].getMonth(), get_week(_speeds[i][0][MERGED_AT]) * 7) + "").split(" ");
+            str_date = pom[1] + " " + (parseInt(pom[2]) - 6) + " " + pom[3] + "---" + pom[1] + " " + parseInt(pom[2]) + " " + pom[3];
         }
-        str_date = pom[1] + " " + pom[2] + " " + pom[3];
-        pole[get_week(_speeds[i][0][MERGED_AT]) - 1] = [str_date, _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8], _speeds[i][1] + _speeds[i][2] + _speeds[i][3] + _speeds[i][4] + _speeds[i][5] + _speeds[i][7] + _speeds[i][8] + _speeds[i][6]]
+        pole[get_week(_speeds[i][0][MERGED_AT]) - 1] = [str_date, _speeds[i][1], _speeds[i][2], _speeds[i][3], _speeds[i][4], _speeds[i][5], _speeds[i][6], _speeds[i][7], _speeds[i][8]]
     }
     return pole
 

@@ -1,0 +1,36 @@
+{% extends "main.html" %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+ <form action="{% url 'index' %} " class="form-horizontal" style="margin-left: 5%; margin-top: 3%" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="row col-md-offset-4">
+                <div class="row">
+                    <div class="col-sm-4 ">
+                        Github Username: openshift
+                        <input class="form-control" id="focusedInput" type="text" name="user" title="user">
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-sm-4">
+                        Github repository: openshift-ansible
+                        <input class="form-control" id="focusedInput" type="text" name="repo" title="repo">
+                    </div>
+                </div>
+                <button id="message_link" type="submit" class="btn btn-primary" style="margin-top: 10px">Submit
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block scripts %}
+
+<script type="text/javascript">
+    $("#message_link").click(function () {
+        $("body").append(" <div class='spinner'><div class='bounce1'></div> <div class='bounce2'></div><div class='bounce3'></div> </div>");
+    });
+</script>
+{% endblock %}

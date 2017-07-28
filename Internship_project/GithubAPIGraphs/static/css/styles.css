@@ -33,6 +33,9 @@
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 
+.ui-datepicker-calendar {
+    display: none;
+    }
 .spinner .bounce1 {
     -webkit-animation-delay: -0.32s;
     animation-delay: -0.32s;

@@ -36,7 +36,7 @@
 
                 </ul>
                 <ul class="nav navbar-right navbar-nav">
-                    <li class="navbar-right" id="change_graph"><a id="change_graph">Change graphs<span
+                    <li class="navbar-right" id="change_graph"><a id="change_graph" href="../../changeGraph">Change graphs<span
                             class="sr-only"></span></a></li>
                 </ul>
             </div>
@@ -44,40 +44,12 @@
 
     </div>
 </nav>
-{% if not haveData %}
-    <form action="{% url 'index' %} " class="form-horizontal" style="margin-left: 5%; margin-top: 3%" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="row col-md-offset-4">
-                <div class="row">
-                    <div class="col-sm-4 ">
-                        Github Username: openshift
-                        <input class="form-control" id="focusedInput" type="text" name="user" title="user">
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 15px">
-                    <div class="col-sm-4">
-                        Github repository: openshift-ansible
-                        <input class="form-control" id="focusedInput" type="text" name="repo" title="repo">
-                    </div>
-                </div>
-                <button id="message_link" type="submit" class="btn btn-primary" style="margin-top: 10px">Submit
-                </button>
-            </div>
-        </div>
-    </form>
-
-{% endif %}
 <div id="header"></div>
+
 {% block content %}
 
 {% endblock %}
 
-
-<form id="dynForm" action="{% url 'index' %} " method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="change_graph" value=True>
-</form>
 
 </body>
 
@@ -96,13 +68,5 @@
 
 {% endblock %}
 
-<script type="text/javascript">
-    $("#message_link").click(function () {
-        $("#header").html(" <div class='spinner'><div class='bounce1'></div> <div class='bounce2'></div><div class='bounce3'></div> </div>");
-    });
-    $("#change_graph").click(function () {
-        document.getElementById("dynForm").submit();
-    });
-</script>
 
 </html>

@@ -31,9 +31,10 @@ function drawTable() {
     google.visualization.events.addListener(table, 'select', selectHandler);
 
     function selectHandler(e) {
-        click = data.getValue(table.getSelection()[0].row, 1);
+        click = data.getValue(table.getSelection()[0].row, 0)+"";
+        console.log(click)
         window.open("https://github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""));
-        chart.setSelection();
+        table.setSelection();
     }
 }
 
@@ -48,7 +49,6 @@ function bySpeed_per_week() {
     data.addColumn('number', '7-14d');
     data.addColumn('number', '14-30d');
     data.addColumn('number', '30+d');
-    data.addColumn('number', 'count of all');
     data.addRows(get_data_by_speed_to_graphPERWEEK(data_fromDatabase, date));
 
 
@@ -76,7 +76,7 @@ function bySpeed_per_week() {
 
 
     var chart = new google.visualization.ComboChart(
-        document.getElementById('chart_div80'));
+        document.getElementById('chart_div'));
     //var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
     var changes = true;
     var changeScale = document.getElementById('changeScale');
@@ -132,7 +132,6 @@ function bySpeed() {
     data.addColumn('number', '7-14d');
     data.addColumn('number', '14-30d');
     data.addColumn('number', '30+d');
-    data.addColumn('number', 'count of all');
     data.addRows(get_data_by_speed_to_graph(data_fromDatabase));
 
     var options = {
@@ -141,7 +140,7 @@ function bySpeed() {
         //isStacked: true,
         title: "Per one month",
         bar: {groupWidth: width_ofBar},
-        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000', '#000000'],
+        colors: ['#009f00', '#00bf00', '#94cb2e', '#e4d500', '#ff9933', '#ff6600', '#ff1e00', '#c60000'],
         seriesType: 'bars',
         series: {8: {type: 'line'}},
         hAxis: {
@@ -162,7 +161,7 @@ function bySpeed() {
     view.setColumns([0]);
 
     var chart = new google.visualization.ComboChart(
-        document.getElementById('chart_div80'));
+        document.getElementById('chart_div'));
     //var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
     var changes = true;
     var changeScale = document.getElementById('changeScale');
@@ -197,14 +196,8 @@ function bySpeed() {
             }
         }
         dateAfterClick = data.getValue(chart.getSelection()[0].row, 0);
-        if (window.location.pathname !== "/") {
-            typeAfterClick = "issue";
-            window.location.replace("../info?date=" + dateAfterClick + "&id=" + typeAfterClick);
-        }
-        else {
-            typeAfterClick = "pr";
-            window.location.replace("/info?date=" + dateAfterClick + "&id=" + typeAfterClick);
-        }
+        typeAfterClick = "pr";
+        window.location.href=window.location.href+"info?date=" + dateAfterClick + "&id=" + typeAfterClick;
         chart.setSelection();
     }
 }

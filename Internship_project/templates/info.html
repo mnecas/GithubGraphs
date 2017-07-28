@@ -1,14 +1,13 @@
 {% extends "main.html" %}
 
 {% block navbar %}
-    <li><a href="../">Pull requests</a></li>
 {% endblock %}
 
 {% block content %}
         <div class="row">
             <h3 class="col-md-offset-1"><a href="http://www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="http://www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
         </div>
-        <button id="changeScale" class="btn col-md-offset-10 btn-default">LIN scale</button> <div id="chart_div80" class="charts"></div>
+        <button id="changeScale" class="btn col-md-offset-10 btn-default">LIN scale</button> <div id="chart_div" class="charts"></div>
 {% endblock %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% block scripts %}
