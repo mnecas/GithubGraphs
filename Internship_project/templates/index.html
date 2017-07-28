@@ -49,6 +49,8 @@
 {% block scripts %}
 
     <script type="text/javascript">
+        var githubUser = '{{ githubUser }}';
+        var githubRepo = '{{ githubRepo }}';
         $(function () {
             $('.date-picker').datepicker({
                 changeMonth: true,

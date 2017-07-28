@@ -32,7 +32,7 @@ function drawTable() {
 
     function selectHandler(e) {
         click = data.getValue(table.getSelection()[0].row, 0) + "";
-        window.open("https://github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""));
+        window.open("//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""));
         table.setSelection();
     }
 }
