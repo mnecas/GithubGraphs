@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from ...models import Website,Branche,PR,Issue
 import dateutil.parser, json, requests
-token=""
+token="b4290a747b71cf65145cda6eb16c27034e69c051"
 
 
 class Command(BaseCommand):
@@ -131,7 +131,7 @@ class Command(BaseCommand):
 
         if _website=="":
             for web in Website.objects.all():
-                print(web)
+                print(web.user+"/"+web.repository)
                 self.request(web)
         else:
             try:

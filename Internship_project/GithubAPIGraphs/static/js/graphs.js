@@ -9,7 +9,7 @@ var width_ofBar = "90%";
 
 function drawTable() {
     var data = new google.visualization.DataTable();
-    data.addColumn('string', 'ID');
+    data.addColumn('number', 'ID');
     data.addColumn('date', 'MERGED_AT');
     data.addColumn('number', 'TIME TO MERGE');
     data.addColumn('string', 'TITLE');

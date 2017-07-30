@@ -6,7 +6,7 @@ from datetime import datetime
 from django.core.serializers import serialize
 from django.http import HttpResponse
 
-token=""
+token="b4290a747b71cf65145cda6eb16c27034e69c051"
 def index(request):
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
@@ -14,7 +14,7 @@ def index(request):
         if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
-            request.session['branche'] = ""
+            request.session['branche'] = 'master'
 
 
         if not Website.objects.filter(user=user, repository=repo).exists():
@@ -122,7 +122,7 @@ def index(request):
                                 query_pr = '''
                                 pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
                                                                  edges {
-                                                                   cursor
+                                                                   cursor   
                                                                    node {
                                                                  number
                                                                  createdAt
@@ -157,10 +157,6 @@ def index(request):
             return redirect("/"+request.session['githubUser']+"/"+request.session['githubRepo']+"/")
         else:
             return render(request, '../templates/reg_webu.html',)
-
-
-
-
 def info(request,user,repo):
     request.session['githubUser'] = user
     request.session['githubRepo'] = repo
@@ -172,8 +168,6 @@ def info(request,user,repo):
                        'githubRepo': request.session['githubRepo'],
                        "githubUser": request.session['githubUser']
                        })
-
-
 def data(request,user,repo):
     by_closed=[]
     try:
@@ -183,7 +177,7 @@ def data(request,user,repo):
             topDate='1/1/2050'
         if btmDate=='':
             btmDate='1/1/1950'
-        branche=request.session.get('branche','')
+        branche=request.session.get('branche','master')
         if branche == '':
             by_closed = PR.objects.filter(website__repository=repo,website__user=user,
                                           branche__baseRefName="master",
@@ -206,21 +200,34 @@ def data(request,user,repo):
 
 def graph(request,user,repo):
     if request.method=="GET":
-        request.session['githubUser']=user
-        request.session['githubRepo']=repo
-        return render(request, '../templates/index.html',
-                          {'haveData': True,
-                           'topDate': request.session.get('topDate',''), 'btmDate': request.session.get('btmDate',''), 'branche': request.session.get('branche',''),
-                           'branches': Branche.objects.filter(website__repository=repo,
-                                                              website__user=user),
-                           'githubRepo': repo, "githubUser": user
-                           })
+
+        if  Website.objects.filter(user=user, repository=repo).exists():
+            request.session['githubUser']=user
+            request.session['githubRepo']=repo
+            return render(request, '../templates/index.html',
+                              {'haveData': True,
+                               'topDate': request.session.get('topDate',''), 'btmDate': request.session.get('btmDate',''),
+                               'branche': request.session.get('branche','master'),
+                               'branches': Branche.objects.filter(website__repository=repo,
+                                                                  website__user=user),
+                               'githubRepo': repo, "githubUser": user
+                               })
+        else:
+            try:
+                del request.session['branche']
+                del request.session['topDate']
+                del request.session['btmDate']
+            except Exception as e:
+                print(e)
+            del request.session['githubUser']
+            del request.session['githubRepo']
+            return redirect("../../")
 
 
     elif request.method=="POST":
         request.session['topDate'] = request.POST.get('topDate', '')
         request.session['btmDate'] = request.POST.get('btmDate', '')
-        request.session['branche'] = request.POST.get('branche', '')
+        request.session['branche'] = request.POST.get('branche', 'master')
         return redirect(".")
 
 def change(request):

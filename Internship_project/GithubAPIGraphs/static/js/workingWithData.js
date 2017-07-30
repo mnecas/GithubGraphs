@@ -58,13 +58,13 @@ function get_all_info_about_usersIn_month(data, date) {
     for (var i = 0; i < data.length; i++) {
         if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_nuberOfColumn(data[i][DIFFERENCE]) === _column)) {
             if ((_column === 1) || (_column === 2) || (_column === 3)) {
-                _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], Math.round(data[i][DIFFERENCE] * 10) / 10 + " h", data[i][TITLE]]);
+                _all_users.push([{v: parseInt(data[i][NUMBER]), f:"#" + data[i][NUMBER]}, data[i][MERGED_AT], {v: Math.round(data[i][DIFFERENCE]), f:Math.round(data[i][DIFFERENCE] * 10) / 10 + " h"}, data[i][TITLE]]);
             }
             else {
                 if (Math.round((data[i][DIFFERENCE] / 24)) <100) {
-                    _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT],{v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / 24)) + " d " + Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
+                    _all_users.push([{v: parseInt(data[i][NUMBER]), f:"#" + data[i][NUMBER]}, data[i][MERGED_AT],{v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / 24)) + " d " + Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
                 }else {
-                    _all_users.push(["#" + data[i][NUMBER], data[i][MERGED_AT], {v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / (24*30))) + " m " +Math.round(((data[i][DIFFERENCE]/30) %24)) + " d "+ Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
+                    _all_users.push([{v: parseInt(data[i][NUMBER]), f:"#" + data[i][NUMBER]}, data[i][MERGED_AT], {v: Math.round(data[i][DIFFERENCE]), f: Math.round((data[i][DIFFERENCE] / (24*30))) + " m " +Math.round(((data[i][DIFFERENCE]/30) %24)) + " d "+ Math.round((data[i][DIFFERENCE] % 24)) + " h"}, data[i][TITLE]]);
                 }
             }
         }
