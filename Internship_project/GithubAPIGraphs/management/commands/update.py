@@ -5,9 +5,12 @@ from ...models import Website, Branche, PR, Issue
 import dateutil.parser
 import json
 import requests
-token = ""
 
 
+
+with open('config.json') as json_data:
+    token=json.load(json_data)[0]["token"]
+  
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('website', type=str, nargs='?', default="")
@@ -67,14 +70,13 @@ class Command(BaseCommand):
                 for issue in data['issues']['edges']:
                     state = issue['node']['state']
                     number = issue['node']['number']
-                    baseRefName = pr['node']['baseRefName']
                     created_at = dateutil.parser.parse(
                         issue['node']['createdAt'])
                     title = issue['node']['title']
                     issue_cursor = issue['cursor']
                     Issue(website=web, number=number,
                           created_at=created_at, state=state, title=title, cursor=issue_cursor).save()
-                    print("ISSUE ", number,"BRANCHE ",baseRefName)
+                    print("ISSUE ", number)
                     query_issue = '''
                                             issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
                                                  edges {

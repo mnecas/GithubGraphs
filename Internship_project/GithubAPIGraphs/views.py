@@ -11,10 +11,14 @@ from django.shortcuts import redirect, render
 
 from .models import PR, Branche, Issue, Website
 
-token = ""
 
 
+with open('config.json') as json_data:
+    token=json.load(json_data)[0]["token"]
 def index(request):
+    
+   
+
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
         repo = request.POST.get('repo', 'openshift-ansible')
@@ -168,6 +172,7 @@ def index(request):
         else:
             return render(request, '../templates/reg_webu.html',)
 
+
 def data(request, user, repo):
     by_closed = []
     try:
@@ -219,6 +224,7 @@ def graph(request, user, repo):
                 del request.session['branche']
                 del request.session['topDate']
                 del request.session['btmDate']
+                
             except Exception as e:
                 print(e)
             del request.session['githubUser']
@@ -237,6 +243,7 @@ def change(request):
         del request.session['branche']
         del request.session['topDate']
         del request.session['btmDate']
+       
     except Exception as e:
         print(e)
     del request.session['githubUser']

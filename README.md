@@ -3,7 +3,7 @@ This is website where you can put url of GitHub repository, and it will parse th
 <b>How to run:</b>
 >in terminal write git clone https://github.com/ocasek/GithubGraphs.git <br/>
 go to https://github.com/settings/tokens and create/select your token<br/>
-replace in views.py "TOKEN_HERE" with your token<br/>
+replace in config.json "token":"" with your token then<br/><br/>
 then in termilan go to GithubGraphs/Internship_project write:<br/>
 pip install -r requirements.txt<br/>
 python manage.py runserver<br/>

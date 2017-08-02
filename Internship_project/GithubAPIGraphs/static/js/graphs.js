@@ -302,14 +302,14 @@ function get_data_by_speed_to_graph(data) {
         count=_speeds[i][0].length+_speeds[i][1].length+_speeds[i][2].length+_speeds[i][3].length+_speeds[i][4].length+_speeds[i][5].length+_speeds[i][6].length+_speeds[i][7].length
         pole.push([
             new Date(date.getYear() + 1900, date.getMonth()),
-            _speeds[i][0].length,"<h4>"+_speeds[i][0].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][0].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][1].length,"<h4>"+_speeds[i][1].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][1].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][2].length,"<h4>"+_speeds[i][2].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][2].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][3].length,"<h4>"+_speeds[i][3].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][3].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][4].length,"<h4>"+_speeds[i][4].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][4].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][5].length,"<h4>"+_speeds[i][5].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][5].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][6].length,"<h4>"+_speeds[i][6].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][6].length/count)*1000)/10+"%</small></h4>",
-            _speeds[i][7].length,"<h4>"+_speeds[i][7].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][7].length/count)*1000)/10+"%</small></h4>",])
+            _speeds[i][0].length,"<div class='googleTr'><h4>"+_speeds[i][0].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][0].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][1].length,"<div class='googleTr'><h4>"+_speeds[i][1].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][1].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][2].length,"<div class='googleTr'><h4>"+_speeds[i][2].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][2].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][3].length,"<div class='googleTr'><h4>"+_speeds[i][3].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][3].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][4].length,"<div class='googleTr'><h4>"+_speeds[i][4].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][4].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][5].length,"<div class='googleTr'><h4>"+_speeds[i][5].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][5].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][6].length,"<div class='googleTr'><h4>"+_speeds[i][6].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][6].length/count)*1000)/10+"%</small></h4></div>",
+            _speeds[i][7].length,"<div class='googleTr'><h4>"+_speeds[i][7].length+"<br><small>"+_date[1]+","+_date[3]+"<br>"+Math.floor((_speeds[i][7].length/count)*1000)/10+"%</small></h4></div>",])
     }
     if (pole.length === 1) {
         pole.push([new Date(date.getYear() + 1900, date.getMonth() - 1),

@@ -1,6 +1,12 @@
 .charts {
     width: 99%;
 }
+.googleTr{
+     width: 100px !important;
+     height: 70px !important;
+     margin-left: 25%;
+     margin-top: 15%
+}
 .date_margin{
   margin-top: 10px;
 }
