@@ -1,33 +1,25 @@
-{% extends "main.html" %}
+{% extends "main.html" %} {% block navbar %} {% endblock %} {% block content %}
+<div class="row">
+    <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
+</div>
+<button id="changeScale" class="btn col-md-offset-10 btn-default row">LIN scale</button>
+<form id="dateRangeForm" method="POST" action="." class="form-horizontal">
 
-{% block navbar %}
-{% endblock %}
-
-{% block content %}
-    <div class="row">
-        <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a
-                href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
-    </div>
-    <button id="changeScale" class="btn col-md-offset-10 btn-default row">LIN scale</button>
-    <form id="dateRangeForm" method="POST" action="." class="form-horizontal">
-
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="col-xs-5 date">
-                <label class="col-xs-3 control-label">FROM</label>
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="col-xs-5 date">
+            <label class="col-xs-3 control-label">FROM</label>
+            <div class="input-group input-append date" id="dateRangePicker">
+                <input type="text" class="date-picker" name="btmDate" value="{{ btmDate }}" title="btmDate" />
+            </div>
+            <div class="date_margin">
+                <label class="col-xs-3 control-label">TO</label>
                 <div class="input-group input-append date" id="dateRangePicker">
-                    <input type="text" class="date-picker" name="btmDate" value="{{ btmDate }}"
-                           title="btmDate"/>
+                    <input type="text" class="date-picker" name="topDate" value="{{ topDate }}" title="topDate" />
                 </div>
-                <div class="date_margin">
-                    <label class="col-xs-3 control-label">TO</label>
-                    <div class="input-group input-append date" id="dateRangePicker">
-                        <input type="text" class="date-picker" name="topDate" value="{{ topDate }}"
-                               title="topDate"/>
-                    </div>
-                </div>
-                <div class="col-xs-4 date_margin">
-                    <select class="form-control" name="branche">
+            </div>
+            <div class="col-xs-4 date_margin">
+                <select class="form-control" name="branche">
                         {% for br in branches %}
                             {% if br.baseRefName == branche %}
                                 <option value="{{ br }}" selected>{{ br }}</option>
@@ -36,50 +28,49 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                </div>
-                <button type="submit" class="btn btn-default date_margin">Submit</button>
             </div>
-
+            <button type="submit" class="btn btn-default date_margin">Submit</button>
         </div>
 
-    </form>
-    <div id="chart_div" class="charts"></div>
-{% endblock %}
+    </div>
 
-{% block scripts %}
+</form>
+<div id="chart_div" class="charts"></div>
+{% endblock %} {% block scripts %}
 
-    <script type="text/javascript">
-        var githubUser = '{{ githubUser }}';
-        var githubRepo = '{{ githubRepo }}';
-        $(function () {
-            $('.date-picker').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                showButtonPanel: true,
-                dateFormat: 'dd/mm/yy',
-                onClose: function (dateText, inst) {
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker('setDate', new Date(year, month, 1));
-                }
-            });
-        });
-        var data_fromDatabase = [];
-        $.getJSON('data', function (data) {
-            for (var i = 0; i < data.length; i++) {
-                data_fromDatabase.push([
-                    new Date(data[i]["fields"]["created_at"]),
-                    new Date(data[i]["fields"]["merged_at"]),
-                    "" + data[i]["fields"]["number"],
-                    (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
-                    "" + data[i]["fields"]["title"]])
-
+<script type="text/javascript">
+    var githubUser = '{{ githubUser }}';
+    var githubRepo = '{{ githubRepo }}';
+    $(function() {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'dd/mm/yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
             }
-            google.charts.load('current', {packages: ['corechart', 'bar']});
-            google.charts.setOnLoadCallback(bySpeed);
-
         });
+    });
+    var data_fromDatabase = [];
+    $.getJSON('data', function(data) {
+        for (var i = 0; i < data.length; i++) {
+            data_fromDatabase.push([
+                new Date(data[i]["fields"]["created_at"]),
+                new Date(data[i]["fields"]["merged_at"]),
+                "" + data[i]["fields"]["number"],
+                (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
+                "" + data[i]["fields"]["title"]
+            ])
 
+        }
+        google.charts.load('current', {
+            packages: ['corechart', 'bar']
+        });
+        google.charts.setOnLoadCallback(bySpeed);
 
-    </script>
+    });
+</script>
 {% endblock %}

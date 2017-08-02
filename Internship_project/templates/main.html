@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Github Graphs</title>
@@ -13,25 +14,25 @@
 </head>
 
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Github graphs</a>
+                <a class="navbar-brand" href="/">Github graphs</a>
 
-        </div>
+            </div>
 
-        {% if haveData %}
+            {% if haveData %}
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    {% block navbar %}
+                    {% block navbar %} 
+                    
                     {% endblock %}
 
                 </ul>
@@ -40,15 +41,15 @@
                             class="sr-only"></span></a></li>
                 </ul>
             </div>
-        {% endif %}
+            {% endif %}
 
-    </div>
-</nav>
-<div id="header"></div>
+        </div>
+    </nav>
+    <div id="header"></div>
 
-{% block content %}
-
-{% endblock %}
+    {% block content %} 
+    
+    {% endblock %}
 
 
 </body>
@@ -57,14 +58,11 @@
 <script type="text/javascript" src="{% static "js/library/jquery-3.2.1.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/library/bootstrap.js" %}"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src='{% static "js/workingWithData.js" %}'></script>
 <script type="text/javascript" src="{% static "js/graphs.js" %}"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
-
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"> 
 {% block scripts %}
-
 
 {% endblock %}
 
