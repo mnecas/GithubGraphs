@@ -2,6 +2,7 @@
 <div class="row">
     <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
 </div>
+<button id="style" class="btn col-md-offset-10 btn-default row" onclick="callgraph()">change style</button>
 <button id="changeScale" class="btn col-md-offset-10 btn-default row">LIN scale</button>
 <form id="dateRangeForm" method="POST" action="." class="form-horizontal">
 
@@ -35,19 +36,47 @@
     </div>
 
 </form>
+<div id="charts">
 <div id="chart_div" class="charts"></div>
+</div>
 {% endblock %} {% block scripts %}
 
 <script type="text/javascript">
+    function callgraph() {
+        if (switchGraph) {
+
+            google.charts.load('current', {
+                packages: ['corechart', 'bar']
+            });
+            $("#chart_div").css("margin-left","0px")
+            $("#information").empty()
+            $("#information").removeAttr( 'style' ).css("margin-left","200px");
+            $("#changeScale").show()
+            google.charts.setOnLoadCallback(bySpeed);
+            switchGraph = false;
+        } else {
+            google.charts.load('current', {
+                'packages': ['table']
+            });
+            $("#charts").css("overflow","hidden")
+            $("#chart_div").css("margin-left","200px").css("float","left").css("position","relative")
+            $("#information").empty()
+            $("#information").css("position","absolute").css("margin-left","700px")
+            $("#changeScale").hide()
+            google.charts.setOnLoadCallback(bySpeed_v2);
+            switchGraph = true;
+        }
+    }
+    var switchGraph = true; 
     var githubUser = '{{ githubUser }}';
     var githubRepo = '{{ githubRepo }}';
-    $(function() {
+    $(function () {
         $('.date-picker').datepicker({
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
             dateFormat: 'dd/mm/yy',
-            onClose: function(dateText, inst) {
+            onClose: function (dateText, inst) {
                 var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
                 var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
                 $(this).datepicker('setDate', new Date(year, month, 1));
@@ -55,22 +84,20 @@
         });
     });
     var data_fromDatabase = [];
-    $.getJSON('data', function(data) {
+    $.getJSON('data', function (data) {
         for (var i = 0; i < data.length; i++) {
             data_fromDatabase.push([
                 new Date(data[i]["fields"]["created_at"]),
                 new Date(data[i]["fields"]["merged_at"]),
                 "" + data[i]["fields"]["number"],
-                (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) / (1000 * 60 * 60),
+                (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) /
+                (1000 * 60 * 60),
                 "" + data[i]["fields"]["title"]
             ])
 
         }
-        google.charts.load('current', {
-            packages: ['corechart', 'bar']
-        });
-        google.charts.setOnLoadCallback(bySpeed);
 
+        callgraph()
     });
 </script>
 {% endblock %}
