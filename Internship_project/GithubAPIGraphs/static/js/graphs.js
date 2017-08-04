@@ -3,7 +3,7 @@
  */
 
 
-//DATA
+//Graphs
 var dateAfterClick;
 var typeAfterClick;
 var weekAfterClick;
@@ -18,11 +18,12 @@ function drawTable() {
     data.addColumn('number', 'TIME TO MERGE');
     data.addColumn('string', 'TITLE');
     data.addRows(get_all_info_about_usersIn_month(data_fromDatabase, date));
+
     var cssClassNames = {
         'headerRow': 'headerChar'
     };
     var options = {
-
+        
         allowHtml: true,
         alternatingRowStyle: false,
         width: "80%",
@@ -58,53 +59,6 @@ function drawTable() {
         });
 
 }
-
-function drawTable_v2() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('number', 'ID');
-    data.addColumn('date', 'MERGED_AT');
-    data.addColumn('number', 'TIME TO MERGE');
-    data.addColumn('string', 'TITLE');
-    data.addRows(get_all_info_about_usersIn_month_v2(data_fromDatabase, date));
-    var cssClassNames = {
-        'headerRow': 'headerChar'
-    };
-    var options = {
-        allowHtml: true,
-        alternatingRowStyle: false,
-        'cssClassNames': cssClassNames
-    };
-
-    var table = new google.visualization.Table(document.getElementById('information'));
-    var formatter = new google.visualization.ColorFormat();
-
-    formatter.addRange(0, 3, 'black', '#009f00');
-    formatter.addRange(3, 12, 'black', '#00bf00');
-    formatter.addRange(12, 24, 'black', '#94cb2e');
-    formatter.addRange(24, 48, 'black', '#e4d500');
-    formatter.addRange(48, 168, 'black', '#ff9933');
-    formatter.addRange(168, 336, 'black', '#ff6600');
-    formatter.addRange(336, 720, 'black', '#ff3e00');
-    formatter.addRange(720, null, 'black', '#f00000');
-    formatter.format(data, 2);
-
-    data.sort({
-        column: 2,
-        desc: true
-    });
-
-    table.draw(data, options);
-
-
-    google.visualization.events.addListener(table, 'select',
-        function (e) {
-            click = data.getValue(table.getSelection()[0].row, 0) + "";
-            window.open("//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""), '_blank');
-            table.setSelection();
-        });
-
-}
-
 
 function bySpeed_v2() {
     var data = new google.visualization.DataTable();
@@ -149,12 +103,12 @@ function bySpeed_v2() {
                 }
             }
             date = data.getValue(table.getSelection()[0].row, 0);
-
+            _column = 20
             typeAfterClick = "pr";
             google.charts.load('current', {
                 'packages': ['table']
             });
-            google.charts.setOnLoadCallback(drawTable_v2);
+            google.charts.setOnLoadCallback(drawTable);
 
             table.setSelection();
         });
@@ -294,8 +248,6 @@ function bySpeed() {
     google.visualization.events.addListener(chart, 'select', selectHandler);
     $("#charts").append('<div id="information" style="margin-left: 200px"></div>');
 
-
-
     function selectHandler(e) {
         if (chart.getSelection().length > 0) {
             if (typeof chart.getSelection()[0].row === 'object') {
@@ -318,8 +270,7 @@ function bySpeed() {
 
 }
 
-//GRAPH
-
+//Data
 var CREATED_AT = 0;
 var MERGED_AT = 1;
 var NUMBER = 2;
@@ -350,7 +301,7 @@ function get_nuberOfColumn(closed_after) {
 function get_all_info_about_usersIn_month(data, date) {
     var _all_users = [];
     for (var i = 0; i < data.length; i++) {
-        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && (get_nuberOfColumn(data[i][DIFFERENCE]) === _column)) {
+        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear()) && ((get_nuberOfColumn(data[i][DIFFERENCE]) === _column) || (_column === 20))) {
             hours = " hours "
             months = " months "
             days = " days "
@@ -375,60 +326,26 @@ function get_all_info_about_usersIn_month(data, date) {
 
                 );
             } else {
-                _all_users.push([{
-                    v: parseInt(data[i][NUMBER]),
-                    f: "#" + data[i][NUMBER]
-                }, data[i][MERGED_AT], {
-                    v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
-                    f: Math.floor((data[i][DIFFERENCE] / 24)) + days + Math.floor((data[i][DIFFERENCE] % 24)) + hours
-                }, data[i][TITLE]]);
+                if (Math.floor(data[i][DIFFERENCE]) < 24) {
+                    _all_users.push([{
+                            v: parseInt(data[i][NUMBER]),
+                            f: "#" + data[i][NUMBER]
+                        }, data[i][MERGED_AT], {
+                            v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
+                            f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
+                        }, data[i][TITLE]]
 
-            }
-        }
-    }
-    return _all_users
-}
-
-function get_all_info_about_usersIn_month_v2(data, date) {
-    var _all_users = [];
-    for (var i = 0; i < data.length; i++) {
-        if ((data[i][MERGED_AT].getMonth() === date.getMonth()) && (data[i][MERGED_AT].getYear() === date.getYear())) {
-            hours = " hours "
-            months = " months "
-            days = " days "
-            if (Math.floor((data[i][DIFFERENCE] % 24)) === 1) {
-                hours = " hour "
-            }
-            if (Math.floor((data[i][DIFFERENCE] / 24)) === 1) {
-                days = " day "
-            }
-
-            if (Math.floor((data[i][DIFFERENCE] / (24 * 30))) === 1) {
-                months = " month "
-            }
-
-            if (Math.floor(data[i][DIFFERENCE]) < 24) {
-                _all_users.push([{
+                    );
+                } else {
+                    _all_users.push([{
                         v: parseInt(data[i][NUMBER]),
                         f: "#" + data[i][NUMBER]
                     }, data[i][MERGED_AT], {
                         v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
-                        f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
-                    }, data[i][TITLE]]
-
-                );
-            } else {
-                _all_users.push([{
-                    v: parseInt(data[i][NUMBER]),
-                    f: "#" + data[i][NUMBER]
-                }, data[i][MERGED_AT], {
-                    v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
-                    f: Math.floor((data[i][DIFFERENCE] / 24)) + days + Math.floor((data[i][DIFFERENCE] % 24)) + hours
-                }, data[i][TITLE]]);
-
+                        f: Math.floor((data[i][DIFFERENCE] / 24)) + days + Math.floor((data[i][DIFFERENCE] % 24)) + hours
+                    }, data[i][TITLE]]);
+                }
             }
-
-
         }
     }
     return _all_users

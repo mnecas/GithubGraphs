@@ -1,45 +1,100 @@
-{% extends "main.html" %} {% block navbar %} {% endblock %} {% block content %}
-<div class="row">
-    <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
-</div>
-<button id="style" class="btn col-md-offset-10 btn-default row" onclick="callgraph()">change style</button>
-<button id="changeScale" class="btn col-md-offset-10 btn-default row">LIN scale</button>
-<form id="dateRangeForm" method="POST" action="." class="form-horizontal">
+<html>
 
-    {% csrf_token %}
-    <div class="form-group">
-        <div class="col-xs-5 date">
-            <label class="col-xs-3 control-label">FROM</label>
-            <div class="input-group input-append date" id="dateRangePicker">
-                <input type="text" class="date-picker" name="btmDate" value="{{ btmDate }}" title="btmDate" />
-            </div>
-            <div class="date_margin">
-                <label class="col-xs-3 control-label">TO</label>
-                <div class="input-group input-append date" id="dateRangePicker">
-                    <input type="text" class="date-picker" name="topDate" value="{{ topDate }}" title="topDate" />
-                </div>
-            </div>
-            <div class="col-xs-4 date_margin">
-                <select class="form-control" name="branche">
-                        {% for br in branches %}
-                            {% if br.baseRefName == branche %}
-                                <option value="{{ br }}" selected>{{ br }}</option>
-                            {% else %}
-                                <option value="{{ br }}">{{ br }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-            </div>
-            <button type="submit" class="btn btn-default date_margin">Submit</button>
+<head>
+    <meta charset="UTF-8"> 
+    <title>Github graphs</title>{% load static %}
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-pf" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-5">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
         </div>
 
-    </div>
+        <div class="collapse navbar-collapse navbar-collapse-5">
+            <ul class="nav navbar-nav navbar-primary navbar-left">
+                <li><a href="#">Github graphs</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-primary navbar-right">
 
-</form>
-<div id="charts">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Set time<b class="caret"></b></a>
+                    <ul class="dropdown-menu dropup">
+                      <form id="dateRangeForm" method="POST" action="." >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="date">
+                                <label class=" control-label">FROM</label>
+                                <div class="input-group input-append date" id="dateRangePicker">
+                                    <input type="text" class="date-picker" name="btmDate" value="{{ btmDate }}" title="btmDate" />
+                                </div>
+                                <div class="date_margin">
+                                    <label class=" control-label">TO</label>
+                                    <div class="input-group input-append date" id="dateRangePicker">
+                                        <input type="text" class="date-picker" name="topDate" value="{{ topDate }}" title="topDate" />
+                                    </div>
+                                </div>
+                                <div class="date_margin">
+                                <label class=" control-label">BRANCHE</label>
+                                    <select class="form-control" name="branche">
+                                    {% for br in branches %}
+                                        {% if br.baseRefName == branche %}
+                                            <option value="{{ br }}" selected>{{ br }}</option>
+                                        {% else %}
+                                            <option value="{{ br }}">{{ br }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-default date_margin "  style="width:100%">Submit</button>
+                            </div>
+                        </div>
+                                                    
+                        </form>
+
+                    </ul>
+
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">graph settings<b class="caret"></b></a>
+                    <ul class="dropdown-menu dropup">
+                        <li>
+                            <button id="style" class="btn btn-default btn-lg" onclick="callgraph()" style="width:100%">change style</button>
+                        </li>
+                        <li>
+                            <button id="changeScale" class="btn btn-default btn-lg" style="width:100%">LIN scale</button>
+                        </li>
+                    <li><button id="change_graph" class="btn btn-default btn-lg" style="width:100%" onclick="window.location.href='/changeGraph'">Change graphs</button></li>
+                     </ul>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+  <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
+<div id="charts" style="margin-top:2.5%">
 <div id="chart_div" class="charts"></div>
-</div>
-{% endblock %} {% block scripts %}
+
+{% load static %}
+<script type="text/javascript" src="{% static "js/graphs.js" %}"></script>
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"> 
 
 <script type="text/javascript">
     function callgraph() {
@@ -59,9 +114,9 @@
                 'packages': ['table']
             });
             $("#charts").css("overflow","hidden")
-            $("#chart_div").css("margin-left","200px").css("float","left").css("position","relative")
+            $("#chart_div").css("margin-left","100px").css("float","left").css("position","relative")
             $("#information").empty()
-            $("#information").css("position","absolute").css("margin-left","700px")
+            $("#information").css("position","absolute").css("margin-left","600px")
             $("#changeScale").hide()
             google.charts.setOnLoadCallback(bySpeed_v2);
             switchGraph = true;
@@ -100,4 +155,7 @@
         callgraph()
     });
 </script>
-{% endblock %}
+
+</body>
+
+</html>

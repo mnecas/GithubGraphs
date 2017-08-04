@@ -8,6 +8,7 @@ import requests
 
 
 
+token=""
 with open('config.json') as json_data:
     token=json.load(json_data)[0]["token"]
   

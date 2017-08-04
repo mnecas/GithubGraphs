@@ -12,16 +12,17 @@ from django.shortcuts import redirect, render
 from .models import PR, Branche, Issue, Website
 
 
-
+token=""
 with open('config.json') as json_data:
     token=json.load(json_data)[0]["token"]
+    
 def index(request):
     
-   
-
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
         repo = request.POST.get('repo', 'openshift-ansible')
+        print(user)
+        print(repo)
         if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
