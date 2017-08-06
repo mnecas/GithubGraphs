@@ -12,12 +12,13 @@ from django.shortcuts import redirect, render
 from .models import PR, Branche, Issue, Website
 
 
-token=""
+token = ""
 with open('config.json') as json_data:
-    token=json.load(json_data)[0]["token"]
-    
+    token = json.load(json_data)[0]["token"]
+
+
 def index(request):
-    
+
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
         repo = request.POST.get('repo', 'openshift-ansible')
@@ -171,7 +172,7 @@ def index(request):
         if ('githubUser' in request.session) and ('githubRepo' in request.session):
             return redirect("/" + request.session['githubUser'] + "/" + request.session['githubRepo'] + "/")
         else:
-            return render(request, '../templates/reg_webu.html',)
+            return render(request, '../templates/index.html',)
 
 
 def data(request, user, repo):
@@ -212,7 +213,7 @@ def graph(request, user, repo):
         if Website.objects.filter(user=user, repository=repo).exists():
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
-            return render(request, '../templates/index.html',
+            return render(request, '../templates/graphs.html',
                           {'haveData': True,
                            'topDate': request.session.get('topDate', ''), 'btmDate': request.session.get('btmDate', ''),
                            'branche': request.session.get('branche', 'master'),
@@ -225,7 +226,7 @@ def graph(request, user, repo):
                 del request.session['branche']
                 del request.session['topDate']
                 del request.session['btmDate']
-                
+
             except Exception as e:
                 print(e)
             del request.session['githubUser']
@@ -244,7 +245,7 @@ def change(request):
         del request.session['branche']
         del request.session['topDate']
         del request.session['btmDate']
-       
+
     except Exception as e:
         print(e)
     del request.session['githubUser']

@@ -3,24 +3,35 @@
 }
 
 .googleTr {
+    border: 2px solid "#444";
     width: 100px !important;
-    height: 70px !important;
-    margin-left: 25%;
-    margin-top: 15%
+    height: 80px !important;
+    padding-left: 25%;
+    padding-top: 2%;
+}
+
+.web_link {
+    color: black!important
 }
 
 .date_margin {
     margin-top: 10px;
 }
-body{
-    background:#ededed
+
+body {
+    background: #eee!important;
 }
+
 .headerChar {
     background: gainsboro;
 }
 
 .special {
     margin-right: 20px
+}
+
+.google-visualization-table-tr-even {
+    background: #eee!important;
 }
 
 .google-visualization-table-td {
@@ -62,7 +73,7 @@ body{
 }
 
 #ui-datepicker-div {
-    margin-left: -220px 
+    margin-left: -220px
 }
 
 @-webkit-keyframes sk-bouncedelay {

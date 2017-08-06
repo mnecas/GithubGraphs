@@ -9,7 +9,9 @@ var typeAfterClick;
 var weekAfterClick;
 var time_of_anination = 1000;
 var width_ofBar = "90%";
-var colors = ["#009f00", "#00bf00", "#94cb2e", "#e4d500", "#ff9933", "#ff6600", "#ff3e00", "#f00000"]
+var bgcolor = "#eee"
+var gridlinecolor = "#777"
+var colors = ["#009f00", "#00bf00", "#94cb2e", "#e4d500", "#ffc131", "#ff9933", "#ff6600", "#f00000"]
 
 function drawTable() {
     var data = new google.visualization.DataTable();
@@ -23,11 +25,11 @@ function drawTable() {
         'headerRow': 'headerChar'
     };
     var options = {
-        
         allowHtml: true,
         alternatingRowStyle: false,
         width: "80%",
-        'cssClassNames': cssClassNames
+        'cssClassNames': cssClassNames,
+
     };
     var formatter = new google.visualization.ColorFormat();
 
@@ -35,9 +37,9 @@ function drawTable() {
     formatter.addRange(3, 12, 'black', '#00bf00');
     formatter.addRange(12, 24, 'black', '#94cb2e');
     formatter.addRange(24, 48, 'black', '#e4d500');
-    formatter.addRange(48, 168, 'black', '#ff9933');
-    formatter.addRange(168, 336, 'black', '#ff6600');
-    formatter.addRange(336, 720, 'black', '#ff3e00');
+    formatter.addRange(48, 168, 'black', '#ffc131');
+    formatter.addRange(168, 336, 'black', '#ff9933');
+    formatter.addRange(336, 720, 'black', '#ff6600');
     formatter.addRange(720, null, 'black', '#f00000');
     formatter.format(data, 2);
 
@@ -79,7 +81,8 @@ function bySpeed_v2() {
 
         allowHtml: true,
         alternatingRowStyle: false,
-        'cssClassNames': cssClassNames
+        'cssClassNames': cssClassNames,
+
     };
 
     var table = new google.visualization.Table(document.getElementById('chart_div'));
@@ -185,12 +188,12 @@ function bySpeed() {
     data.addRows(get_data_by_speed_to_graph(data_fromDatabase));
 
     var options = {
+        backgroundColor: bgcolor,
         legend: "top",
         height: 400,
         tooltip: {
             isHtml: true
         },
-        title: "Per one month",
         bar: {
             groupWidth: width_ofBar
         },
@@ -202,7 +205,10 @@ function bySpeed() {
             }
         },
         hAxis: {
-            format: 'M/yyyy'
+            format: 'M/yyyy',
+            gridlines: {
+                color: gridlinecolor
+            }
         },
         animation: {
             startup: true,
@@ -212,7 +218,10 @@ function bySpeed() {
         vAxis: {
             logScale: false,
             scaleType: "",
-            title: 'Count of PRs'
+            title: 'Count of PRs',
+            gridlines: {
+                color: gridlinecolor
+            }
         }
     };
 
@@ -369,15 +378,15 @@ function get_info_about_dataByMonth(data) {
 }
 
 function get_info_by_how_long_before_merged(data) {
-    var _speed_1 = [];
-    var _speed_2 = [];
-    var _speed_3 = [];
-    var _speed_4 = [];
-    var _speed_5 = [];
-    var _speed_6 = [];
-    var _speed_7 = [];
-    var _speed_8 = [];
-    var pole = [];
+    var _speed_1 = [],
+        _speed_2 = [],
+        _speed_3 = [],
+        _speed_4 = [],
+        _speed_5 = [],
+        _speed_6 = [],
+        _speed_7 = [],
+        _speed_8 = [],
+        pole = [];
     var _infoData = get_info_about_dataByMonth(data);
     for (var i = 0; i < _infoData.length; i++) {
         for (var ch = 0; ch < _infoData[i].length; ch++) {
@@ -400,14 +409,7 @@ function get_info_by_how_long_before_merged(data) {
             }
         }
         pole.push([_speed_1, _speed_2, _speed_3, _speed_4, _speed_5, _speed_6, _speed_7, _speed_8]);
-        _speed_1 = [];
-        _speed_2 = [];
-        _speed_3 = [];
-        _speed_4 = [];
-        _speed_5 = [];
-        _speed_6 = [];
-        _speed_7 = [];
-        _speed_8 = [];
+        _speed_1 = [], _speed_2 = [], _speed_3 = [], _speed_4 = [], _speed_5 = [], _speed_6 = [], _speed_7 = [], _speed_8 = [];
     }
 
     return pole
@@ -424,19 +426,12 @@ function get_data_by_speed_to_graph(data) {
                 date = _speeds[i][ch][0][MERGED_AT]
             }
         }
-        _date = (new Date(date.getYear() + 1900, date.getMonth()) + "").split(" ")
         count = _speeds[i][0].length + _speeds[i][1].length + _speeds[i][2].length + _speeds[i][3].length + _speeds[i][4].length + _speeds[i][5].length + _speeds[i][6].length + _speeds[i][7].length
-        pole.push([
-            new Date(date.getYear() + 1900, date.getMonth()),
-            _speeds[i][0].length, "<div class='googleTr'><h4>" + _speeds[i][0].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][0].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][1].length, "<div class='googleTr'><h4>" + _speeds[i][1].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][1].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][2].length, "<div class='googleTr'><h4>" + _speeds[i][2].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][2].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][3].length, "<div class='googleTr'><h4>" + _speeds[i][3].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][3].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][4].length, "<div class='googleTr'><h4>" + _speeds[i][4].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][4].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][5].length, "<div class='googleTr'><h4>" + _speeds[i][5].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][5].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][6].length, "<div class='googleTr'><h4>" + _speeds[i][6].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][6].length / count) * 1000) / 10 + "%</small></h4></div>",
-            _speeds[i][7].length, "<div class='googleTr'><h4>" + _speeds[i][7].length + "<br><small>" + _date[1] + "," + _date[3] + "<br>" + Math.floor((_speeds[i][7].length / count) * 1000) / 10 + "%</small></h4></div>",
-        ])
+        _data = [new Date(date.getYear() + 1900, date.getMonth())]
+        for (var x = 0; x < 8; x++) {
+            _data.push(_speeds[i][x].length, "<div class='googleTr'><h3>" + _speeds[i][x].length + "<br><small>" + (new Date(date.getYear() + 1900, date.getMonth()) + "").split(" ")[1] + "," + (new Date(date.getYear() + 1900, date.getMonth()) + "").split(" ")[3] + "<br>" + Math.floor((_speeds[i][x].length / count) * 1000) / 10 + "%</small></h3></div>", )
+        }
+        pole.push(_data)
     }
     if (pole.length === 1) {
         pole.push([new Date(date.getYear() + 1900, date.getMonth() - 1),
