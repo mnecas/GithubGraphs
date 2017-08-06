@@ -1,160 +1,67 @@
-<html>
+<html class="login-pf">
 
 <head>
-    <meta charset="UTF-8"> 
-    <title>Github graphs</title>{% load static %}
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
-    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
-
+    <meta charset="UTF-8">
+    <title>Github graphs</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-pf" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-5">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-        </div>
+    <span id="badge">
+         {% load static %}
+  <img src="{% static "images/logo.png" %}" alt=" logo" />
+</span>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 col-md-6 col-lg-5 login">
+                <form action="{% url 'index' %} " class="form-horizontal" method="post">
 
-        <div class="collapse navbar-collapse navbar-collapse-5">
-            <ul class="nav navbar-nav navbar-primary navbar-left">
-                <li><a href="#">Github graphs</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-primary navbar-right">
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Set time<b class="caret"></b></a>
-                    <ul class="dropdown-menu dropup">
-                      <form id="dateRangeForm" method="POST" action="." >
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="date">
-                                <label class=" control-label">FROM</label>
-                                <div class="input-group input-append date" id="dateRangePicker">
-                                    <input type="text" class="date-picker" name="btmDate" value="{{ btmDate }}" title="btmDate" />
-                                </div>
-                                <div class="date_margin">
-                                    <label class=" control-label">TO</label>
-                                    <div class="input-group input-append date" id="dateRangePicker">
-                                        <input type="text" class="date-picker" name="topDate" value="{{ topDate }}" title="topDate" />
-                                    </div>
-                                </div>
-                                <div class="date_margin">
-                                <label class=" control-label">BRANCHE</label>
-                                    <select class="form-control" name="branche">
-                                    {% for br in branches %}
-                                        {% if br.baseRefName == branche %}
-                                            <option value="{{ br }}" selected>{{ br }}</option>
-                                        {% else %}
-                                            <option value="{{ br }}">{{ br }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-default date_margin "  style="width:100%">Submit</button>
-                            </div>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="user" class="col-sm-2 col-md-2 control-label">Username</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" name="user" placeholder="" tabindex="1">
                         </div>
-                                                    
-                        </form>
+                    </div>
 
-                    </ul>
+                    <div class="form-group">
+                        <label for="repo" class="col-sm-2 col-md-2 control-label">Repository</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" name="repo" placeholder="" tabindex="2">
+                        </div>
+                    </div>
+                    <!--
+                    <div class="form-group">
+                        <label for="token" class="col-sm-2 col-md-2 control-label">Your token</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" name="token"placeholder="" tabindex="3">
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
 
-                </li>
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">graph settings<b class="caret"></b></a>
-                    <ul class="dropdown-menu dropup">
-                        <li>
-                            <button id="style" class="btn btn-default btn-lg" onclick="callgraph()" style="width:100%">change style</button>
-                        </li>
-                        <li>
-                            <button id="changeScale" class="btn btn-default btn-lg" style="width:100%">LIN scale</button>
-                        </li>
-                    <li><button id="change_graph" class="btn btn-default btn-lg" style="width:100%" onclick="window.location.href='/changeGraph'">Change graphs</button></li>
-                     </ul>
-                </li>
-
-            </ul>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 submit">
+                            <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-5 col-md-6 col-lg-7 details">
+                <p><strong>Welcome to Github graphs </strong></p>
+                <p>This is project in which you can find graphs about pull requests time to merge. </p>
+                <p>If you put some new Repository which is not in the database, it can took some time because Github API allowe
+                    me to query max 100 per request.</p>
+                <p>Updates are done by admin script.</p>
+                <p></p>
+            </div>
         </div>
-    </nav>
-  <h3 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}">{{ githubUser }}</a> / <a href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h3>
-<div id="charts" style="margin-top:2.5%">
-<div id="chart_div" class="charts"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css"></script>
 
-{% load static %}
-<script type="text/javascript" src="{% static "js/graphs.js" %}"></script>
-<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript"src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"> 
-
-<script type="text/javascript">
-    function callgraph() {
-        if (switchGraph) {
-
-            google.charts.load('current', {
-                packages: ['corechart', 'bar']
-            });
-            $("#chart_div").css("margin-left","0px")
-            $("#information").empty()
-            $("#information").removeAttr( 'style' ).css("margin-left","200px");
-            $("#changeScale").show()
-            google.charts.setOnLoadCallback(bySpeed);
-            switchGraph = false;
-        } else {
-            google.charts.load('current', {
-                'packages': ['table']
-            });
-            $("#charts").css("overflow","hidden")
-            $("#chart_div").css("margin-left","100px").css("float","left").css("position","relative")
-            $("#information").empty()
-            $("#information").css("position","absolute").css("margin-left","600px")
-            $("#changeScale").hide()
-            google.charts.setOnLoadCallback(bySpeed_v2);
-            switchGraph = true;
-        }
-    }
-    var switchGraph = true; 
-    var githubUser = '{{ githubUser }}';
-    var githubRepo = '{{ githubRepo }}';
-    $(function () {
-        $('.date-picker').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'dd/mm/yy',
-            onClose: function (dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-            }
-        });
-    });
-    var data_fromDatabase = [];
-    $.getJSON('data', function (data) {
-        for (var i = 0; i < data.length; i++) {
-            data_fromDatabase.push([
-                new Date(data[i]["fields"]["created_at"]),
-                new Date(data[i]["fields"]["merged_at"]),
-                "" + data[i]["fields"]["number"],
-                (new Date(data[i]["fields"]["merged_at"]) - new Date(data[i]["fields"]["created_at"])) /
-                (1000 * 60 * 60),
-                "" + data[i]["fields"]["title"]
-            ])
-
-        }
-
-        callgraph()
-    });
-</script>
 
 </body>
 
