@@ -27,6 +27,7 @@ function drawTable() {
     var options = {
         allowHtml: true,
         alternatingRowStyle: false,
+        width: "80%",
         'cssClassNames': cssClassNames,
 
     };
