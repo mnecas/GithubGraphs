@@ -17,53 +17,66 @@ class Command(BaseCommand):
         parser.add_argument('website', type=str, nargs='?', default="")
 
     def request(self, web):
-        _pr = PR.objects.filter(website=web).last()
-        _issue = Issue.objects.filter(website=web).last()
         query_issue = ""
         query_pr = ""
         issue_cursor = ""
         pr_cursor = ""
         headers = {'Authorization': 'token ' + token}
-        query = '''
-               {
-                 repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
-                   issues(first: 100 states:CLOSED after:"''' + _issue.cursor + '''") {
-                     edges {
-                       cursor
-                       node {
-                     number
-                     createdAt
-                     state
-                     title
+        query_pr_add=""
+        query_issue_add=""
+        
 
-                       }
-                     }
-                   }
-                   pullRequests(first: 100 states:MERGED after:"''' + _pr.cursor + '''") {
-                     edges {
-                       cursor
-                       node {
-                         number
-                         createdAt
-                         state
-                         title
-                         closed
-                         mergedAt
-                         baseRefName
-                         updatedAt
-                       }
-                     }
-                 }
-               }
-               }
-               '''
+        if PR.objects.filter(website=web).exists():
+          _pr = PR.objects.filter(website=web).last()
+          query_pr_add='after:"' + _pr.cursor + '"'
+        else:
+          query_pr_add=''
+        if Issue.objects.filter(website=web).exists():
+          _issue = Issue.objects.filter(website=web).last()
+          query_issue_add='after:"' + _issue.cursor + '"'
+        else:
+          query_issue_add=''
+            
+        query = '''
+              {
+                repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
+                  issues(first: 100 states:CLOSED '''+query_issue_add+''') {
+                    edges {
+                      cursor
+                      node {
+                    number
+                    createdAt
+                    state
+                    title
+
+                      }
+                    }
+                  }
+                  pullRequests(first: 100 states:MERGED '''+query_pr_add+''') {
+                    edges {
+                      cursor
+                      node {
+                        number
+                        createdAt
+                        state
+                        title
+                        closed
+                        mergedAt
+                        baseRefName
+                        updatedAt
+                      }
+                    }
+                }
+              }
+              }
+              '''
         r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                           headers=headers).json()
+                          headers=headers).json()
         pr_edges = r2['data']['repository']['pullRequests']['edges']
         issue_edges = r2['data']['repository']['issues']['edges']
         while pr_edges != [] or issue_edges != []:
             r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                               headers=headers).json()
+                              headers=headers).json()
 
             data = r2['data']['repository']
             if issue_edges != []:
@@ -80,17 +93,17 @@ class Command(BaseCommand):
                     print("ISSUE ", number)
                     query_issue = '''
                                             issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
-                                                 edges {
-                                                   cursor
-                                                   node {
-                                                 number
-                                                 createdAt
-                                                 state
-                                                 title
+                                                edges {
+                                                  cursor
+                                                  node {
+                                                number
+                                                createdAt
+                                                state
+                                                title
 
-                                                   }
-                                                 }
-                                               }'''
+                                                  }
+                                                }
+                                              }'''
             if pr_edges != []:
                 pr_edges = data['pullRequests']['edges']
                 for pr in data['pullRequests']['edges']:
@@ -103,37 +116,37 @@ class Command(BaseCommand):
                     title = pr['node']['title']
                     pr_cursor = pr['cursor']
                     PR(website=web, number=number, created_at=created_at,
-                       state=state,
-                       title=title, merged_at=merged_at, updated_at=updated_at, cursor=pr_cursor,
-                       branche=Branche.objects.get_or_create(baseRefName=baseRefName,
-                                                             website=web)[0]).save()
+                      state=state,
+                      title=title, merged_at=merged_at, updated_at=updated_at, cursor=pr_cursor,
+                      branche=Branche.objects.get_or_create(baseRefName=baseRefName,
+                                                            website=web)[0]).save()
                     print("PR ", number,"BRANCHE ",baseRefName)
                     query_pr = '''
                                 pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
-                                         edges {
-                                           cursor
-                                           node {
-                                         number
-                                         createdAt
-                                         state
-                                         title
-                                         closed
-                                         mergedAt
-                                         baseRefName
-                                         updatedAt
-                                           }
-                                         }
-                                     }'''
+                                        edges {
+                                          cursor
+                                          node {
+                                        number
+                                        createdAt
+                                        state
+                                        title
+                                        closed
+                                        mergedAt
+                                        baseRefName
+                                        updatedAt
+                                          }
+                                        }
+                                    }'''
             query = '''
-                   {
-                     repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
-                       ''' + query_issue + '''
-                       ''' + query_pr + '''
+                  {
+                    repository(owner:"''' + web.user + '''", name:"''' + web.repository + '''"){
+                      ''' + query_issue + '''
+                      ''' + query_pr + '''
 
                     }
-                   }
-                   '''
-
+                  }
+                  '''
+     
     def handle(self, *args, **options):
         _website = options.get('website', None)
 
@@ -148,3 +161,5 @@ class Command(BaseCommand):
                 self.request(web)
             except Exception as e:
                 print("Invalid repository")
+    
+      

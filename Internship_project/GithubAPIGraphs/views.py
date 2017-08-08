@@ -21,9 +21,7 @@ def index(request):
 
     if request.method == "POST":
         user = request.POST.get('user', 'openshift')
-        repo = request.POST.get('repo', 'openshift-ansible')
-        print(user)
-        print(repo)
+        repo = request.POST.get('repo', 'openshift-ansible')    
         if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
@@ -98,16 +96,15 @@ def index(request):
                             print("ISSUE ", number)
                             query_issue = '''
                                     issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
-                                                edges {
-                                                cursor
-                                                node {
-                                                number
-                                                createdAt
-                                                state
-                                                title
-
-                                                }
-                                                }
+                                    edges {
+                                        cursor
+                                        node {
+                                            number
+                                            createdAt
+                                            state
+                                            title
+                                        }
+                                    }
                                             }'''
                     else:
                         query_issue = ""
@@ -137,19 +134,19 @@ def index(request):
                                    0]).save()
                             query_pr = '''
                                 pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
-                                                                 edges {
-                                                                   cursor   
-                                                                   node {
-                                                                 number
-                                                                 createdAt
-                                                                 state
-                                                                 title
-                                                                 closed
-                                                                 mergedAt
-                                                                 baseRefName
-                                                                 updatedAt
-                                                                   }
-                                                                 }}'''
+                                edges {
+                                    cursor   
+                                    node {
+                                        number
+                                        createdAt
+                                        state
+                                        title
+                                        closed
+                                        mergedAt
+                                        baseRefName
+                                        updatedAt
+                                    }
+                                }}'''
 
                     else:
                         query_pr = ""

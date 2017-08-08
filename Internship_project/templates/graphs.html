@@ -13,11 +13,10 @@
 <body>
     <nav class="navbar navbar-default navbar-pf" role="navigation">
         <div class="collapse navbar-collapse navbar-collapse-5">
-            <ul class="nav navbar-nav navbar-primary navbar-left">
-                <li><a href="#">Github graphs</a></li>
+           <ul class="nav navbar-nav navbar-primary navbar-left">
+                <li><a href="#"> Github graphs</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-primary navbar-right">
-
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">set time / branche<b class="caret"></b></a>
                     <ul class="dropdown-menu dropup">
@@ -66,14 +65,15 @@
                         <li>
                             <button id="changeScale" class="btn btn-default btn-lg" style="width:100%">LIN scale</button>
                         </li>
-                        <li><button id="change_graph" class="btn btn-default btn-lg" style="width:100%" onclick="window.location.href='/changeGraph'">Change graphs</button></li>
+                        <li><button id="change_graph" class="btn btn-default btn-lg web_link " style="width:100%" onclick="window.location.href='/changeGraph'"><a href="/changeGraph" class="web_link">Change graphs</a></button></li>
                     </ul>
                 </li>
 
             </ul>
         </div>
     </nav>
-    <h2 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}" class="web_link">{{ githubUser }}</a> / <a class="web_link" href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h2>
+
+         <h2 class="col-md-offset-1"><a href="//www.github.com/{{ githubUser }}" class="web_link">{{ githubUser }}</a> / <a class="web_link" href="//www.github.com/{{ githubUser }}/{{ githubRepo }}">{{ githubRepo }}</a></h2>
     <div id="charts" style="margin-top:2.5%">
         <div id="chart_div" class="charts"></div>
 
