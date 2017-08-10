@@ -10,10 +10,14 @@
     padding-top: 2%;
 }
 
+.githublink{
+    color: black!important;
+    text-align: left !important;
+
+}
 .web_link {
     color: black!important
 }
-
 .date_margin {
     margin-top: 10px;
 }
@@ -34,15 +38,10 @@ body {
     background: #eee!important;
 }
 
-.google-visualization-table-td {
+.google-visualization-table-type-number{
     text-align: center !important;
 }
 
-.spinner {
-    margin: 100px auto 0;
-    width: 70px;
-    text-align: center;
-}
 
 .google-visualization-table-tr-even {
     cursor: pointer;
@@ -62,40 +61,7 @@ body {
     display: none;
 }
 
-.spinner .bounce1 {
-    -webkit-animation-delay: -0.32s;
-    animation-delay: -0.32s;
-}
-
-.spinner .bounce2 {
-    -webkit-animation-delay: -0.16s;
-    animation-delay: -0.16s;
-}
 
 #ui-datepicker-div {
     margin-left: -220px
-}
-
-@-webkit-keyframes sk-bouncedelay {
-    0%,
-    80%,
-    100% {
-        -webkit-transform: scale(0)
-    }
-    40% {
-        -webkit-transform: scale(1.0)
-    }
-}
-
-@keyframes sk-bouncedelay {
-    0%,
-    80%,
-    100% {
-        -webkit-transform: scale(0);
-        transform: scale(0);
-    }
-    40% {
-        -webkit-transform: scale(1.0);
-        transform: scale(1.0);
-    }
 }

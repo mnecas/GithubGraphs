@@ -5,7 +5,9 @@ from ...models import Website, Branche, PR
 import dateutil.parser
 import json
 import requests
+import os
 
+token=os.environ.get("TOKEN","")
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
@@ -14,8 +16,7 @@ class Command(BaseCommand):
     def request(self, web):
         query_pr = ""
         pr_cursor = ""
-        token = ""
-        headers = {'Authorization': 'token ' + web.token}
+        headers = {'Authorization': 'token ' + token}
         query_pr_add = ""
 
         if PR.objects.filter(website=web).exists():

@@ -2,7 +2,7 @@
 import json
 import time
 from datetime import datetime
-
+import os
 import dateutil.parser
 import requests
 from django.core.serializers import serialize
@@ -11,18 +11,15 @@ from django.shortcuts import redirect, render
 
 from .models import PR, Branche, Website
 
+token=os.environ.get("TOKEN","")
 
 def index(request):
-
     if request.method == "POST":
         user = request.POST.get('user', 'openshift').lower()
         repo = request.POST.get('repo', 'openshift-ansible').lower()
-        token = request.POST.get('token', '').lower()
-        if token == '':
-            with open('config.json') as json_data:
-                token = json.load(json_data)[0]["token"]
+    
 
-        if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session) or (not 'token' in request.session):
+        if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
             request.session['branche'] = 'master'
@@ -59,9 +56,8 @@ def index(request):
             r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                headers=headers).json()
             if r2['data']['repository'] != None:
-                Website(repository=repo, user=user, token=token).save()
+                Website(repository=repo, user=user).save()
                 while pr_edges != []:
-                    localtime = time.asctime(time.localtime(time.time()))
                     r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                        headers=headers).json()
                     data = r2['data']['repository']
@@ -119,7 +115,7 @@ def index(request):
                 del request.session['githubRepo']
                 return redirect("/")
         return redirect("/" + user + "/" + repo + "/")
-
+       
     elif request.method == "GET":
         if ('githubUser' in request.session) and ('githubRepo' in request.session):
             return redirect("/" + request.session['githubUser'] + "/" + request.session['githubRepo'] + "/")

@@ -53,12 +53,7 @@ function drawTable() {
     table.draw(data, options);
 
 
-    google.visualization.events.addListener(table, 'select',
-        function (e) {
-            click = data.getValue(table.getSelection()[0].row, 0) + "";
-            window.open("//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + click.replace("#", ""), '_blank');
-            table.setSelection();
-        });
+  
 
 }
 
@@ -331,7 +326,7 @@ function get_all_info_about_usersIn_month(data, date) {
                     }, data[i][MERGED_AT], {
                         v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
                         f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
-                    }, data[i][TITLE]]
+                    }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]
 
                 );
             } else {
@@ -342,7 +337,7 @@ function get_all_info_about_usersIn_month(data, date) {
                         }, data[i][MERGED_AT], {
                             v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
                             f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
-                        }, data[i][TITLE]]
+                        }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]
 
                     );
                 } else {
@@ -352,7 +347,7 @@ function get_all_info_about_usersIn_month(data, date) {
                     }, data[i][MERGED_AT], {
                         v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
                         f: Math.floor((data[i][DIFFERENCE] / 24)) + days + Math.floor((data[i][DIFFERENCE] % 24)) + hours
-                    }, data[i][TITLE]]);
+                    }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]);
                 }
             }
         }

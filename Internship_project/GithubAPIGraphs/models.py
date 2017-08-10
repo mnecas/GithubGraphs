@@ -10,7 +10,6 @@ from django.template.backends import django
 class Website(models.Model):
     user = models.CharField(max_length=150, default="")
     repository = models.CharField(max_length=150, default="", primary_key=True)
-    token = models.CharField(max_length=150, default="")
 
     def __str__(self):
         return str(self.repository)
