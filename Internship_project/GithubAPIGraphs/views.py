@@ -20,8 +20,8 @@ with open('config.json') as json_data:
 def index(request):
 
     if request.method == "POST":
-        user = request.POST.get('user', 'openshift')
-        repo = request.POST.get('repo', 'openshift-ansible')    
+        user = request.POST.get('user', 'openshift').lower()
+        repo = request.POST.get('repo', 'openshift-ansible').lower()        
         if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
