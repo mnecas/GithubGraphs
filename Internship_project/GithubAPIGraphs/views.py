@@ -9,43 +9,31 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .models import PR, Branche, Issue, Website
-
-
-token = ""
-with open('config.json') as json_data:
-    token = json.load(json_data)[0]["token"]
+from .models import PR, Branche, Website
 
 
 def index(request):
 
     if request.method == "POST":
         user = request.POST.get('user', 'openshift').lower()
-        repo = request.POST.get('repo', 'openshift-ansible').lower()        
-        if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
+        repo = request.POST.get('repo', 'openshift-ansible').lower()
+        token = request.POST.get('token', '').lower()
+        if token == '':
+            with open('config.json') as json_data:
+                token = json.load(json_data)[0]["token"]
+
+        if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session) or (not 'token' in request.session):
             request.session['githubUser'] = user
             request.session['githubRepo'] = repo
             request.session['branche'] = 'master'
 
         if not Website.objects.filter(user=user, repository=repo).exists():
-            query_issue = ""
+
             query_pr = ""
-            issue_cursor = ""
             pr_cursor = ""
             query = '''
             {
               repository(owner: "''' + user + '''", name: "''' + repo + '''") {
-                issues(first: 100 states:CLOSED) {
-                  edges {
-                    cursor
-                    node {
-                      number
-                      createdAt
-                      state
-                      title
-                    }
-                  }
-                }
                  pullRequests(first: 100 states:MERGED) {
                   edges {
                     cursor
@@ -68,47 +56,15 @@ def index(request):
             headers = {'Authorization': 'token ' + token}
 
             pr_edges = [""]
-            issue_edges = [""]
             r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                headers=headers).json()
             if r2['data']['repository'] != None:
-                Website(repository=repo, user=user).save()
-                while pr_edges != [] or issue_edges != []:
+                Website(repository=repo, user=user, token=token).save()
+                while pr_edges != []:
                     localtime = time.asctime(time.localtime(time.time()))
-                    print(localtime)
                     r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
                                        headers=headers).json()
-
                     data = r2['data']['repository']
-                    if issue_edges != []:
-                        issue_edges = data['issues']['edges']
-                        for issue in issue_edges:
-                            state = issue['node']['state']
-                            number = issue['node']['number']
-                            created_at = dateutil.parser.parse(
-                                issue['node']['createdAt'])
-
-                            title = issue['node']['title']
-                            issue_cursor = issue['cursor']
-                            Issue(website=Website.objects.get(repository=repo), number=number,
-                                  created_at=created_at, state=state, title=title, cursor=issue_cursor).save()
-
-                            print("ISSUE ", number)
-                            query_issue = '''
-                                    issues(first: 100 states:CLOSED after:"''' + issue_cursor + '''") {
-                                    edges {
-                                        cursor
-                                        node {
-                                            number
-                                            createdAt
-                                            state
-                                            title
-                                        }
-                                    }
-                                            }'''
-                    else:
-                        query_issue = ""
-
                     if pr_edges != []:
                         pr_edges = data['pullRequests']['edges']
                         for pr in pr_edges:
@@ -154,7 +110,6 @@ def index(request):
                     query = '''
                         {
                           repository(owner:"''' + user + '''", name:"''' + repo + '''"){
-                            ''' + query_issue + '''
                            ''' + query_pr + '''
                         }
                         }
