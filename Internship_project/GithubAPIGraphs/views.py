@@ -9,15 +9,20 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .models import PR, Branche, Website
+from .models import PR, Branche, Website,Add_websites
 
-token=os.environ.get("TOKEN","")
+token = os.environ.get("TOKEN", "")
 
+
+def websites(request):
+    allwebs=""
+    for website in Website.objects.all():
+        allwebs+="<h3>"+website.user+"/"+website.repository+"</h3>"
+    return HttpResponse(allwebs)
 def index(request):
     if request.method == "POST":
         user = request.POST.get('user', 'openshift').lower()
         repo = request.POST.get('repo', 'openshift-ansible').lower()
-    
 
         if (not 'githubUser' in request.session) or (not 'githubRepo' in request.session):
             request.session['githubUser'] = user
@@ -25,97 +30,17 @@ def index(request):
             request.session['branche'] = 'master'
 
         if not Website.objects.filter(user=user, repository=repo).exists():
-
-            query_pr = ""
-            pr_cursor = ""
-            query = '''
-            {
-              repository(owner: "''' + user + '''", name: "''' + repo + '''") {
-                 pullRequests(first: 100 states:MERGED) {
-                  edges {
-                    cursor
-                    node {
-                      number
-                      createdAt
-                      state
-                      title
-                      closed
-                      mergedAt
-                      baseRefName
-                      updatedAt
-                    }
-                  }
-                }
-              }
-            }
-            '''
-
-            headers = {'Authorization': 'token ' + token}
-
-            pr_edges = [""]
-            r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                               headers=headers).json()
-            if r2['data']['repository'] != None:
-                Website(repository=repo, user=user).save()
-                while pr_edges != []:
-                    r2 = requests.post('https://api.github.com/graphql', json.dumps({"query": query}),
-                                       headers=headers).json()
-                    data = r2['data']['repository']
-                    if pr_edges != []:
-                        pr_edges = data['pullRequests']['edges']
-                        for pr in pr_edges:
-                            state = pr['node']['state']
-                            number = pr['node']['number']
-                            created_at = dateutil.parser.parse(
-                                pr['node']['createdAt'])
-                            merged_at = dateutil.parser.parse(
-                                pr['node']['mergedAt'])
-                            updated_at = dateutil.parser.parse(
-                                pr['node']['updatedAt'])
-                            baseRefName = pr['node']['baseRefName']
-
-                            print("PR ", number)
-                            title = pr['node']['title']
-                            pr_cursor = pr['cursor']
-
-                            PR(website=Website.objects.get(repository=repo), number=number, created_at=created_at,
-                               state=state,
-                               title=title, merged_at=merged_at, updated_at=updated_at, cursor=pr_cursor,
-                               branche=Branche.objects.get_or_create(baseRefName=baseRefName,
-                                                                     website=Website.objects.get(repository=repo))[
-                                   0]).save()
-                            query_pr = '''
-                                pullRequests(first: 100 states:MERGED after:"''' + pr_cursor + '''") {
-                                edges {
-                                    cursor   
-                                    node {
-                                        number
-                                        createdAt
-                                        state
-                                        title
-                                        closed
-                                        mergedAt
-                                        baseRefName
-                                        updatedAt
-                                    }
-                                }}'''
-
-                    else:
-                        query_pr = ""
-
-                    query = '''
-                        {
-                          repository(owner:"''' + user + '''", name:"''' + repo + '''"){
-                           ''' + query_pr + '''
-                        }
-                        }
-                        '''
+            r2 = requests.get('https://api.github.com/repos/'+user+"/"+repo+"?access_token="+token).json()
+            if str(r2)!="{'message': 'Not Found', 'documentation_url': 'https://developer.github.com/v3'}":
+                if not Add_websites.objects.filter(user=user, repository=repo).exists():
+                    Add_websites(user=user, repository=repo).save()
+                return render(request, '../templates/index.html',{"message":"Repository was added on the list.","correct":True})
             else:
-                del request.session['githubUser']
-                del request.session['githubRepo']
-                return redirect("/")
-        return redirect("/" + user + "/" + repo + "/")
-       
+                return render(request, '../templates/index.html',{"message":"Invalid repository. ","correct":False})
+                
+        else:
+            return redirect("/" + user + "/" + repo + "/")
+
     elif request.method == "GET":
         if ('githubUser' in request.session) and ('githubRepo' in request.session):
             return redirect("/" + request.session['githubUser'] + "/" + request.session['githubRepo'] + "/")
