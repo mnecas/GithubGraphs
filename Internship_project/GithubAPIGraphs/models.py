@@ -37,7 +37,7 @@ class PR(models.Model):
     def __str__(self):
         return str(self.title)
 
-class Add_websites(models.Model):
+class Add_website(models.Model):
     user = models.CharField(max_length=150, default="")
     repository = models.CharField(max_length=150, default="", primary_key=True)
 

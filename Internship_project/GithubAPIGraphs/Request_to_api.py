@@ -2,7 +2,7 @@ import os
 import dateutil.parser
 import json
 import requests
-from .models import PR, Website, Branche, Add_websites
+from .models import PR, Website, Branche, Add_website
 token = os.environ.get("TOKEN", "")
 
 

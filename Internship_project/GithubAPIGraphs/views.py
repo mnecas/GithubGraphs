@@ -9,7 +9,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .models import PR, Branche, Website,Add_websites
+from .models import PR, Branche, Website,Add_website
 
 token = os.environ.get("TOKEN", "")
 
@@ -30,8 +30,8 @@ def index(request):
         if not Website.objects.filter(user=user, repository=repo).exists():
             r2 = requests.get('https://api.github.com/repos/'+user+"/"+repo+"?access_token="+token).json()
             if str(r2)!="{'message': 'Not Found', 'documentation_url': 'https://developer.github.com/v3'}":
-                if not Add_websites.objects.filter(user=user, repository=repo).exists():
-                    Add_websites(user=user, repository=repo).save()
+                if not Add_website.objects.filter(user=user, repository=repo).exists():
+                    Add_website(user=user, repository=repo).save()
                 return render(request, '../templates/index.html',{"message":"Repository was added on the list.","correct":True})
             else:
                 return render(request, '../templates/index.html',{"message":"Invalid repository. ","correct":False})

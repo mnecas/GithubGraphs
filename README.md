@@ -10,7 +10,8 @@ TOKEN=YOUR_TOKEN python3 manage.py runserver --insecure<br/>
 <br/>
 For update data:<br/>
 TOKEN=YOUR_TOKEN python manage.py update - will update all websites <br/>
-TOKEN=YOUR_TOKEN python manage.py update user/repo - update only one repo
+TOKEN=YOUR_TOKEN python manage.py update user/repo - update only one repo<br/>
+or in admin Websites there is action to update it.
 <br/><br/>
 For download data from repo:
 <br/>
