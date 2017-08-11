@@ -30,7 +30,7 @@ except Exception:
     SECRET_KEY = ''.join([random.SystemRandom().choice(chars) for i in range(50)])
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 

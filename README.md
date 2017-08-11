@@ -14,5 +14,5 @@ TOKEN=YOUR_TOKEN python manage.py update user/repo - update only one repo
 <br/><br/>
 For download data from repo:
 <br/>
-TOKEN=YOUR_TOKEN python3 manage.py runserver --insecure<br/><br/>
+TOKEN=YOUR_TOKEN python3 manage.py save_website --insecure<br/>or in admin Add_websites there is action to save it.<br/><br/>
 if it doesn't work check your python version.
