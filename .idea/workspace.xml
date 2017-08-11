@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="43dce9d7-70b2-4216-ba0b-061de46f6ec6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -103,6 +104,7 @@
         <option value="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py" />
         <option value="$PROJECT_DIR$/Internship_project/Internship_project/urls.py" />
         <option value="$PROJECT_DIR$/Internship_project/Internship_project/settings.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
