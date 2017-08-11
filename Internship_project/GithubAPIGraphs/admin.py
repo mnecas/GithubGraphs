@@ -24,7 +24,7 @@ def update_repository(modeladmin, request, queryset):
         requests.update()
         
 class Update(admin.ModelAdmin):
-    actions = [update_websites]
+    actions = [update_repository]
 
 admin.site.register(PR)
 admin.site.register(Website,Update)
