@@ -2,33 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="43dce9d7-70b2-4216-ba0b-061de46f6ec6" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap-theme.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap-theme.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap-theme.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap-theme.min.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/library/bootstrap.min.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/css/styles.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/fonts/glyphicons-halflings-regular.eot" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/fonts/glyphicons-halflings-regular.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/fonts/glyphicons-halflings-regular.woff" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/images/img.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/images/logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/images/logo_v2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/graphs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/library/Issues.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/library/bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/library/bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/library/jquery-3.2.1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/static/js/library/npm.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/db.sqlite3" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py" afterPath="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Internship_project/Internship_project/settings.py" afterPath="$PROJECT_DIR$/Internship_project/Internship_project/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Internship_project/Internship_project/urls.py" afterPath="$PROJECT_DIR$/Internship_project/Internship_project/urls.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Internship_project/config.json" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Internship_project/db.sqlite3" afterPath="$PROJECT_DIR$/Internship_project/db.sqlite3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Internship_project/templates/index.html" afterPath="$PROJECT_DIR$/Internship_project/templates/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,8 +19,8 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="26" column="13" lean-forward="true" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+            <state relative-caret-position="18">
+              <caret line="26" column="12" lean-forward="false" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -52,10 +29,26 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="360">
+              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding>
                 <element signature="e#1#12#0" expanded="true" />
+                <marker date="1502391391015" expanded="true" signature="1679:1733" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="1679:2038" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="1768:2038" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="2071:3522" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="2099:3281" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="2424:2846" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="2860:3281" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="3556:4976" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="3588:4698" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="3661:4335" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="3850:4333" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="4349:4698" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="4366:4507" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="4734:4976" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="4999:5271" ph="..." />
+                <marker date="1502391391015" expanded="true" signature="5008:5125" ph="..." />
               </folding>
             </state>
           </provider>
@@ -64,10 +57,10 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="27" column="1" lean-forward="true" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
+            <state relative-caret-position="306">
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
-                <element signature="e#652#703#0" expanded="true" />
+                <element signature="e#652#693#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -76,7 +69,7 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
+            <state relative-caret-position="36">
               <caret line="3" column="40" lean-forward="false" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -101,8 +94,8 @@
       <list>
         <option value="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/urls.py" />
         <option value="$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py" />
-        <option value="$PROJECT_DIR$/Internship_project/Internship_project/settings.py" />
         <option value="$PROJECT_DIR$/Internship_project/Internship_project/urls.py" />
+        <option value="$PROJECT_DIR$/Internship_project/Internship_project/settings.py" />
       </list>
     </option>
   </component>
@@ -118,7 +111,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -149,24 +142,12 @@
               <item name="GithubGraphs" type="462c0819:PsiDirectoryNode" />
               <item name="Internship_project" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="GithubGraphs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="GithubGraphs" type="462c0819:PsiDirectoryNode" />
-              <item name="Internship_project" type="462c0819:PsiDirectoryNode" />
-              <item name="GithubAPIGraphs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="GithubGraphs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="GithubGraphs" type="462c0819:PsiDirectoryNode" />
-              <item name="Internship_project" type="462c0819:PsiDirectoryNode" />
-              <item name="Internship_project" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -201,19 +182,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="7" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
     <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2542735" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25106838" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -222,6 +201,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -244,6 +224,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="e#1#12#0" expanded="true" />
+            <marker date="1502391391015" expanded="true" signature="1679:1733" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="1679:2038" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="1768:2038" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2071:3522" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2099:3281" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2424:2846" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2860:3281" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3556:4976" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3588:4698" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3661:4335" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3850:4333" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4349:4698" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4366:4507" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4734:4976" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4999:5271" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="5008:5125" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="27" column="1" lean-forward="true" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
+          <folding>
+            <element signature="e#652#693#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -254,7 +270,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -264,7 +280,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
+        <state relative-caret-position="36">
+          <caret line="3" column="40" lean-forward="false" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore" />
+    <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
           <caret line="3" column="40" lean-forward="false" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
@@ -274,28 +301,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="27" column="1" lean-forward="true" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
+        <state relative-caret-position="306">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <element signature="e#652#703#0" expanded="true" />
+            <element signature="e#652#693#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Internship_project/GithubAPIGraphs/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="360">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding>
             <element signature="e#1#12#0" expanded="true" />
+            <marker date="1502391391015" expanded="true" signature="1679:1733" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="1679:2038" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="1768:2038" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2071:3522" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2099:3281" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2424:2846" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="2860:3281" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3556:4976" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3588:4698" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3661:4335" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="3850:4333" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4349:4698" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4366:4507" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4734:4976" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="4999:5271" ph="..." />
+            <marker date="1502391391015" expanded="true" signature="5008:5125" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Internship_project/Internship_project/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="26" column="13" lean-forward="true" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        <state relative-caret-position="18">
+          <caret line="26" column="12" lean-forward="false" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
           <folding />
         </state>
       </provider>
