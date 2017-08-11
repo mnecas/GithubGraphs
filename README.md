@@ -14,7 +14,7 @@ TOKEN=[*YOUR_TOKEN*] python manage.py update [*user*]/[*repo*] - update only one
 <br/><br/>
 For download data from repo:
 <br/>
-TOKEN=[*YOUR_TOKEN*] python3 manage.py runserver --insecure<br/><br/>
+TOKEN=[*YOUR_TOKEN*] python3 manage.py save_website [*user*]/[*repo*]<br/><br/>
 if it doesn't work check your python version.
 
 <b>Work with graphs</b><br>
