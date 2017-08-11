@@ -16,12 +16,3 @@ For download data from repo:
 <br/>
 TOKEN=[*YOUR_TOKEN*] python3 manage.py save_website [*user*]/[*repo*]<br/><br/>
 if it doesn't work check your python version.
-
-<b>Work with graphs</b><br>
-
-> First thing what you need to do is submit github user and repo from which you want the data.<br/>
-It can take a lot of time because github api give me only 100 PRs per request<br/>
-
-TOKEN=[*YOUR_TOKEN*] python manage.py update - will update all websites <br/>
-TOKEN=[*YOUR_TOKEN*] python manage.py update [*user*]/[*repo*] - update only one repo<br/> 
-That how look the graphs

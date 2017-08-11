@@ -95,16 +95,27 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         _website = options.get('website', None)
-        try:
-            _web = Add_websites.objects.get(user=_website.split(
-                    "/")[0], repository=_website.split("/")[1])
+        if not (Website.objects.filter(user=_website.split("/")[0], repository=_website.split("/")[1]).exists()):
+            try:
+                if(Add_websites.objects.filter(user=_website.split("/")[0], repository=_website.split("/")[1]).exists()):
+                    _web = Add_websites.objects.get(user=_website.split(
+                            "/")[0], repository=_website.split("/")[1])
+                    Website(user=_web.user,repository=_web.repository).save()
+                    web=Website.objects.get(user=_web.user,repository=_web.repository)
+                    self.request(web)
+                    Add_websites.objects.get(user=_website.split(
+                            "/")[0], repository=_website.split("/")[1]).delete()
+                else:
+                    r2 = requests.get('https://api.github.com/repos/' + _website.split("/")[0] + "/" + _website.split("/")[1] + "?access_token=" + token).json()
+                    if str(r2) != "{'message': 'Not Found', 'documentation_url': 'https://developer.github.com/v3'}":
+                        Website(user=_website.split("/")[0], repository=_website.split("/")[1]).save()
+                        web = Website.objects.get(user=_website.split("/")[0], repository=_website.split("/")[1])
+                        self.request(web)
+                    else:
+                        print("Invalid repository")
 
-            Website(user=_web.user,repository=_web.repository).save()
-
-            web=Website.objects.get(user=_web.user,repository=_web.repository)
-            self.request(web)
-            Add_websites.objects.get(user=_website.split(
-                    "/")[0], repository=_website.split("/")[1]).delete()
-        except Exception as e:
+            except Exception as e:
                 print("Invalid repository")
+        else:
+            print("Website is already in the database")
 
