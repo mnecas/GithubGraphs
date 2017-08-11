@@ -53,7 +53,7 @@ function drawTable() {
     table.draw(data, options);
 
 
-  
+
 
 }
 
@@ -321,14 +321,15 @@ function get_all_info_about_usersIn_month(data, date) {
             }
             if ((_column === 1) || (_column === 3) || (_column === 5)) {
                 _all_users.push([{
-                        v: parseInt(data[i][NUMBER]),
-                        f: "#" + data[i][NUMBER]
-                    }, data[i][MERGED_AT], {
-                        v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
-                        f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
-                    }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]
-
-                );
+                    v: parseInt(data[i][NUMBER]),
+                    f: "#" + data[i][NUMBER]
+                }, data[i][MERGED_AT], {
+                    v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
+                    f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
+                }, {
+                    v: data[i][TITLE],
+                    f: "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + data[i][NUMBER] + "'class='githublink'>" + data[i][TITLE] + "</a>"
+                }]);
             } else {
                 if (Math.floor(data[i][DIFFERENCE]) < 24) {
                     _all_users.push([{
@@ -337,7 +338,10 @@ function get_all_info_about_usersIn_month(data, date) {
                         }, data[i][MERGED_AT], {
                             v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
                             f: Math.floor(data[i][DIFFERENCE]) + hours + Math.floor((data[i][DIFFERENCE] % 1) * 60) + " min"
-                        }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]
+                        }, {
+                            v: data[i][TITLE],
+                            f: "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + data[i][NUMBER] + "'class='githublink'>" + data[i][TITLE] + "</a>"
+                        }]
 
                     );
                 } else {
@@ -347,7 +351,10 @@ function get_all_info_about_usersIn_month(data, date) {
                     }, data[i][MERGED_AT], {
                         v: Math.floor(data[i][DIFFERENCE] * 100) / 100,
                         f: Math.floor((data[i][DIFFERENCE] / 24)) + days + Math.floor((data[i][DIFFERENCE] % 24)) + hours
-                    }, "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/"+data[i][NUMBER]+"'class='githublink'>"+data[i][TITLE]+"</a>"]);
+                    }, {
+                        v: data[i][TITLE],
+                        f: "<a href='//www.github.com/" + githubUser + "/" + githubRepo + "/pull/" + data[i][NUMBER] + "'class='githublink'>" + data[i][TITLE] + "</a>"
+                    }]);
                 }
             }
         }
