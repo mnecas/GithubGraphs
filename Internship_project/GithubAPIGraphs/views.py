@@ -15,10 +15,8 @@ token = os.environ.get("TOKEN", "")
 
 
 def websites(request):
-    allwebs=""
-    for website in Website.objects.all():
-        allwebs+="<h3>"+website.user+"/"+website.repository+"</h3>"
-    return HttpResponse(allwebs)
+    if request.method == "GET":
+        return render(request, '../templates/websites.html',{"websites":Website.objects.all()})
 def index(request):
     if request.method == "POST":
         user = request.POST.get('user', 'openshift').lower()
