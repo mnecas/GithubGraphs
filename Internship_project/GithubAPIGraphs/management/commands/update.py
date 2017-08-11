@@ -15,7 +15,6 @@ class Command(BaseCommand):
         requests.update()
     def handle(self, *args, **options):
         _website = options.get('website', None)
-
         if _website == "":
             for web in Website.objects.all():
                 print(web.user + "/" + web.repository)
