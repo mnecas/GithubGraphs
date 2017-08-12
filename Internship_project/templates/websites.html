@@ -12,7 +12,7 @@
     <h3 style="margin-left:1%">Repositories</h3>
     <ul>
         {% for web in websites %}
-        <li>{{web.user}} - {{web.repository}}</li>
+        <li><a href="../{{web.user}}/{{web.repository}}" style="color:black!important">{{web.user}} - {{web.repository}}</a></li>
         {% endfor %}
     </ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
