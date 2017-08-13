@@ -80,10 +80,9 @@ def data(request, user, repo):
 
 def graph(request, user, repo):
     if request.method == "GET":
-
+        request.session['githubUser'] = user
+        request.session['githubRepo'] = repo
         if Website.objects.filter(user=user, repository=repo).exists():
-            request.session['githubUser'] = user
-            request.session['githubRepo'] = repo
             return render(request, '../templates/graphs.html',
                           {'haveData': True,
                            'topDate': request.session.get('topDate', ''), 'btmDate': request.session.get('btmDate', ''),

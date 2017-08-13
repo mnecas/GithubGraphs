@@ -26,8 +26,10 @@ try:
     with open('/etc/secret_key.txt') as f:
         SECRET_KEY = f.read().strip()
 except Exception:
-    chars = ''.join([string.ascii_letters, string.digits, string.punctuation]).replace('\'', '').replace('"', '').replace('\\', '')
-    SECRET_KEY = ''.join([random.SystemRandom().choice(chars) for i in range(50)])
+    chars = ''.join([string.ascii_letters, string.digits, string.punctuation]).replace(
+        '\'', '').replace('"', '').replace('\\', '')
+    SECRET_KEY = ''.join([random.SystemRandom().choice(chars)
+                          for i in range(50)])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -86,7 +88,33 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+    	     'formatter': 'verbose',
+             'class': 'logging.FileHandler',
+            'filename': 'server.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+       },
+    },
+}
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
