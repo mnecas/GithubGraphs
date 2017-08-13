@@ -100,8 +100,11 @@ def graph(request, user, repo):
 
             except Exception as e:
                 print(e)
-            del request.session['githubUser']
-            del request.session['githubRepo']
+            try:
+                del request.session['githubUser']
+                del request.session['githubRepo']
+            except Exception as e:
+                print(e)
             return redirect("../../")
 
     elif request.method == "POST":
