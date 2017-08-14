@@ -103,7 +103,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
              'class': 'logging.FileHandler',
-             'filename': '/root/server.log',
+             'filename': 'server.log',
         },
         'console':{
             'level':'INFO',
