@@ -90,17 +90,10 @@ DATABASES = {
 }
 LOGGING = {
     'version': 1,
-<<<<<<< HEAD
     'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(message)s %(asctime)s '
-=======
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
->>>>>>> f91bc040bde2c86701b83dbc6d73645c0bc74d4c
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -109,12 +102,9 @@ LOGGING = {
     'handlers': {
         'file': {
             'level': 'INFO',
-<<<<<<< HEAD
-    	     
              'class': 'logging.FileHandler',
              'filename': '/root/server.log',
         },
-
         'console':{
             'level':'INFO',
             'class':'logging.StreamHandler',
@@ -124,19 +114,10 @@ LOGGING = {
         'django': {
             'handlers': ['file','console'],
             'formatter': 'verbose',
-=======
     	     'formatter': 'verbose',
              'class': 'logging.FileHandler',
             'filename': 'server.log',
         },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
->>>>>>> f91bc040bde2c86701b83dbc6d73645c0bc74d4c
-            'level': 'INFO',
-            'propagate': True,
-       },
     },
 }
 # Password validation
