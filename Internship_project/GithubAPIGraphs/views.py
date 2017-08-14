@@ -40,10 +40,7 @@ def index(request):
             return redirect("/" + user + "/" + repo + "/")
 
     elif request.method == "GET":
-        if ('githubUser' in request.session) and ('githubRepo' in request.session):
-            return redirect("/" + request.session['githubUser'] + "/" + request.session['githubRepo'] + "/")
-        else:
-            return render(request, '../templates/index.html',)
+        return render(request, '../templates/index.html',)
 
 
 def data(request, user, repo):
@@ -80,10 +77,9 @@ def data(request, user, repo):
 
 def graph(request, user, repo):
     if request.method == "GET":
-
+        request.session['githubUser'] = user
+        request.session['githubRepo'] = repo
         if Website.objects.filter(user=user, repository=repo).exists():
-            request.session['githubUser'] = user
-            request.session['githubRepo'] = repo
             return render(request, '../templates/graphs.html',
                           {'haveData': True,
                            'topDate': request.session.get('topDate', ''), 'btmDate': request.session.get('btmDate', ''),
@@ -100,8 +96,11 @@ def graph(request, user, repo):
 
             except Exception as e:
                 print(e)
-            del request.session['githubUser']
-            del request.session['githubRepo']
+            try:
+                del request.session['githubUser']
+                del request.session['githubRepo']
+            except Exception as e:
+                print(e)
             return redirect("../../")
 
     elif request.method == "POST":
