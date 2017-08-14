@@ -115,9 +115,12 @@ def change(request):
         del request.session['branche']
         del request.session['topDate']
         del request.session['btmDate']
-
     except Exception as e:
         print(e)
-    del request.session['githubUser']
-    del request.session['githubRepo']
+
+    try:
+        del request.session['githubUser']
+        del request.session['githubRepo']
+    except Exception as e:
+        print(e)
     return redirect("/")
