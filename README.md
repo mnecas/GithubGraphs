@@ -1,7 +1,7 @@
 # GithubGraphs
 
 Generate graphs and reports of pull requests for your GitHub repository. Plug in your repository URL, parse the PRs and see the health of your PR merge process.
-![Screenshot](Screenshot.png)
+![Screenshot](Screenshot_2.png)
 
 ## Installation
 
